@@ -12,9 +12,12 @@ from .bertscore import BERTScoreEvaluator
 from .semantic_embedding import SemanticEmbeddingEvaluator
 from .perplexity import PerplexityEvaluator
 from .radgraph_metrics import RadGraphEvaluator
-from .chexpert_metrics import CheXpertEvaluator
 from .composite import CompositeMetricEvaluator
 from .bounding_box_metrics import BoundingBoxEvaluator
+
+# CheXpertEvaluator was removed from the repository. Do not import it here to avoid
+# import-time failures when its supporting code or models are absent.
+# If CheXpert support is restored in the future, re-add the import here.
 
 __all__ = [
     'BaseEvaluator',
@@ -24,7 +27,6 @@ __all__ = [
     'SemanticEmbeddingEvaluator',
     'PerplexityEvaluator',
     'RadGraphEvaluator',
-    'CheXpertEvaluator',
     'CompositeMetricEvaluator',
     'BoundingBoxEvaluator'
 ]

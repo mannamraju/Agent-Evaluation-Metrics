@@ -8,6 +8,9 @@ Demonstrates why BLEU-4 is much stricter than BLEU-2 for medical reports.
 import pandas as pd
 from collections import Counter
 import math
+import argparse
+import json
+import os
 
 def tokenize_simple(text):
     """Simple tokenization for BLEU calculation."""
@@ -172,6 +175,63 @@ def test_bleu_strictness():
     print(f"  BLEU-4: {bleu4_good:.4f}")
     print(f"  💡 Both scores are high due to long exact matches")
 
+def run_from_json(data_file, section="bleu_strictness"):
+    """Run BLEU comparisons for cases stored in a JSON file under a named section."""
+    if not os.path.exists(data_file):
+        print(f"Data file not found: {data_file}")
+        return
+
+    with open(data_file, 'r', encoding='utf-8') as fh:
+        data = json.load(fh)
+
+    cases = data.get(section, [])
+    if not cases:
+        print(f"No cases found in section '{section}' of {data_file}")
+        return
+
+    print(f"\n📁 Running BLEU comparisons from {data_file} (section: {section})")
+    print("="*60)
+    for i, case in enumerate(cases, start=1):
+        ref = case.get('reference') or case.get('gt') or case.get('reference', '')
+        cand = case.get('candidate') or case.get('pred') or case.get('candidate', '')
+        desc = case.get('description', '')
+
+        print(f"\nCase {i}: {desc}")
+        print(f"  Reference: {ref}")
+        print(f"  Candidate: {cand}")
+
+        bleu2 = compute_bleu_score(ref, cand, max_n=2)
+        bleu4 = compute_bleu_score(ref, cand, max_n=4)
+
+        print(f"  BLEU-2: {bleu2:.4f} | BLEU-4: {bleu4:.4f} | Ratio: {bleu2/(bleu4 if bleu4>0 else 1e-12):.2f}")
+
+        # show n-gram details for clarity
+        print("  2-gram precision:")
+        _ = show_ngram_details(ref, cand, 2)
+        print("  4-gram precision:")
+        _ = show_ngram_details(ref, cand, 4)
+
+def parse_and_run():
+    parser = argparse.ArgumentParser(description='BLEU strictness demo (optionally run on provided JSON test cases)')
+    parser.add_argument('--data-file', type=str, default=None, help='Path to JSON file with test cases')
+    parser.add_argument('--section', type=str, default='bleu_strictness', help='Section inside JSON to run (default: bleu_strictness)')
+    args = parser.parse_args()
+
+    if args.data_file:
+        run_from_json(args.data_file, section=args.section)
+    else:
+        test_bleu_strictness()
+
 if __name__ == "__main__":
-    test_bleu_strictness()
-    print("\n✅ BLEU strictness demonstration completed!")
+    # allow CLI path to data file in CXRMetric/metrics/data by default
+    # If no args provided, call parse_and_run() to enable --data-file option
+    import sys
+    # If the user provided no CLI args, but the metrics_test_cases.json exists in the repo,
+    # prefer running the demo against its 'bleu_strictness' section.
+    repo_data_default = os.path.join(os.path.dirname(__file__), 'CXRMetric', 'metrics', 'data', 'metrics_test_cases.json')
+    if len(sys.argv) == 1 and os.path.exists(repo_data_default):
+        # run using the metrics data file
+        run_from_json(repo_data_default, section='bleu_strictness')
+        print("\n✅ BLEU strictness demonstration completed using repository data!")
+    else:
+        parse_and_run()

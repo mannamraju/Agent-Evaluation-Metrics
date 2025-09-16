@@ -7,7 +7,7 @@ the differences between BLEU-2 and BLEU-4 scoring.
 """
 
 import pandas as pd
-from CXRMetric.metrics.bleu_metrics import BLEUEvaluator
+from CXRMetric.metrics.bleu.bleu_metrics import BLEUEvaluator
 
 def test_bleu_implementation():
     """Test BLEU implementation with controlled examples."""

@@ -13,7 +13,7 @@ import os
 sys.path.insert(0, os.path.dirname(__file__))
 
 # Import only the BLEU evaluator directly
-from CXRMetric.metrics.bleu_metrics import BLEUEvaluator
+from CXRMetric.metrics.bleu.bleu_metrics import BLEUEvaluator
 
 def test_bleu_direct():
     """Test BLEU-4 with direct implementation."""

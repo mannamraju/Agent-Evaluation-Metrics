@@ -1,0 +1,9 @@
+study_id,report,bleu_score,bleu4_score
+1,Bilateral lungs are clear without acute cardiopulmonary findings.,0.16896586820584414,4.909777631374571e-155
+2,Normal cardiac silhouette. No effusion or pneumothorax seen.,0.3237953442541832,3.3832961509688394e-78
+3,Heart is mildly enlarged. No signs of pulmonary edema.,0.40451991747794525,4.484824319939061e-78
+4,Hyperinflated lungs suggesting COPD. No infiltrates present.,0.3334869235560669,4.101791032784236e-78
+5,Minor right-sided pleural fluid. Rest of study normal.,8.170202920075766e-155,1.3483065280626046e-231
+6,No acute abnormalities seen on chest X-ray.,0.4085166851999189,8.956404721575399e-155
+7,Atelectasis in both lower lobes. No infiltrate identified.,0.2357022603955158,7.241926111174567e-155
+8,Heart and lungs appear normal on radiograph.,8.061224930331203e-155,1.258141043412406e-231
