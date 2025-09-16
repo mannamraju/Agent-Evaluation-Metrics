@@ -23,9 +23,10 @@ logger = logging.getLogger(__name__)
 
 # Import GPU configuration and optimized evaluation system
 try:
-    from azure_gpu_config import azure_config, print_system_info
+    # Prefer the consolidated implementation under azure_deployment
+    from azure_deployment.azure_gpu_config import azure_config, print_system_info
     GPU_CONFIG_AVAILABLE = True
-    logger.info("Azure GPU configuration loaded successfully")
+    logger.info("Azure GPU configuration (azure_deployment) loaded successfully")
 except ImportError as e:
     GPU_CONFIG_AVAILABLE = False
     logger.warning(f"Azure GPU configuration not available: {e}")

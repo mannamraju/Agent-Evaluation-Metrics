@@ -11,9 +11,9 @@ from typing import Dict, List, Any, Optional, Union
 import psutil
 import gc
 
-# Import Azure GPU configuration
+# Import Azure GPU configuration from consolidated azure_deployment package
 try:
-    from azure_gpu_config import azure_config, get_device, apply_optimizations
+    from azure_deployment.azure_gpu_config import azure_config, get_device, apply_optimizations
     AZURE_GPU_CONFIG_AVAILABLE = True
 except ImportError:
     AZURE_GPU_CONFIG_AVAILABLE = False

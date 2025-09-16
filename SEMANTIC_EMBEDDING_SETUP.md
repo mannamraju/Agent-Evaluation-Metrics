@@ -119,8 +119,8 @@ results, summary = evaluate_reports(
 The semantic embedding evaluation is fully supported in Azure deployments:
 
 ```bash
-# Azure deployment includes CheXbert setup
-./deploy-aci.ps1 -VMType gpu
+# Azure deployment includes CheXbert setup (use the script under azure_deployment)
+azure_deployment/deploy-aci.ps1 -VMType gpu
 ```
 
 For Azure deployments, ensure the CheXbert model is included in your container image or mounted as a volume.
