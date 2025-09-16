@@ -42,7 +42,7 @@ Available metrics:
   - bertscore: BERTScore semantic similarity
   - semantic_embedding: CheXbert embedding similarity (requires model)
   - radgraph: RadGraph clinical information extraction (requires model)  
-  - chexpert: CheXpert micro-F1 clinical finding accuracy (requires model)
+  - chexpert: (removed) CheXpert micro-F1 support has been removed from this repository
   - composite: RadCliQ composite metrics (requires other metrics)
   - bounding_box: Bounding box IoU evaluation (requires box data)
         """)
@@ -173,17 +173,9 @@ Available metrics:
                     print(f"  {col}: {value:.4f}")
             
             # Show dataset-level metrics
-            if 'chexpert' in metric_data and isinstance(metric_data['chexpert'], dict):
-                if 'micro_f1' in metric_data['chexpert']:
-                    print(f"  CheXpert micro-F1: {metric_data['chexpert']['micro_f1']:.4f}")
-        
+            # CheXpert support removed — chexpert results will not be present
+            
         # Dataset-level results
-        if 'chexpert_results' in summary:
-            chex_results = summary['chexpert_results']
-            print(f"\nCHEXPERT RESULTS:")
-            print(f"  Micro-F1: {chex_results['micro_f1']:.4f}")
-            print(f"  Conditions: {len(chex_results.get('conditions', []))}")
-        
         if 'bounding_box_results' in summary:
             bbox_results = summary['bounding_box_results']
             print(f"\nBOUNDING BOX RESULTS:")

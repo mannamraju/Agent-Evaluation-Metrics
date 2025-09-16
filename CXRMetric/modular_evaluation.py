@@ -21,9 +21,8 @@ from .metrics.rouge.rouge_metrics import ROUGEEvaluator
 from .metrics.bertscore import BERTScoreEvaluator
 from .metrics.semantic_embedding import SemanticEmbeddingEvaluator
 from .metrics.radgraph_metrics import RadGraphEvaluator
-from .metrics.chexpert_metrics import CheXpertEvaluator
-from .metrics.composite_metrics import CompositeMetricEvaluator
 from .metrics.bounding_box_metrics import BoundingBoxEvaluator
+from .metrics.composite_metrics import CompositeMetricEvaluator
 
 
 class ModularEvaluationRunner:
@@ -146,17 +145,6 @@ class ModularEvaluationRunner:
         elif metric_name == 'radgraph':
             eval_kwargs['radgraph_path'] = self.config['radgraph_path']
             eval_kwargs['cache_dir'] = self.cache_dir
-        
-        elif metric_name == 'chexpert':
-            eval_kwargs['chexbert_path'] = self.config['chexbert_path']
-            eval_kwargs['cache_dir'] = self.cache_dir
-        
-        elif metric_name == 'composite':
-            eval_kwargs.update({
-                'composite_v0_path': self.config['composite_v0_path'],
-                'composite_v1_path': self.config['composite_v1_path'],
-                'normalizer_path': self.config['normalizer_path']
-            })
         
         # For other metrics (bleu, rouge, bounding_box), only add basic parameters
         # No additional kwargs to avoid parameter conflicts
@@ -317,9 +305,8 @@ class ModularEvaluationRunner:
             'rouge': [],               # ROUGE-L (no dependencies)
             'bertscore': [],           # BERTScore (no dependencies)
             'semantic_embedding': [],  # Semantic embedding (no dependencies)
-            'radgraph': [],           # RadGraph (no dependencies)
-            'chexpert': [],           # CheXpert (no dependencies, dataset-level)
-            'bounding_box': [],       # Bounding box IoU (no dependencies, dataset-level)
+            'radgraph': [],            # RadGraph (no dependencies)
+            'bounding_box': [],        # Bounding box IoU (no dependencies, dataset-level)
             'composite': ['bleu', 'bertscore', 'semantic_embedding', 'radgraph']  # Needs other metrics
         }
         
@@ -377,12 +364,6 @@ class ModularEvaluationRunner:
             if evaluator is None:
                 continue
                 
-            # Get CheXpert results
-            if hasattr(evaluator, 'get_chexpert_results'):
-                chexpert_results = evaluator.get_chexpert_results()
-                if chexpert_results:
-                    summary['chexpert_results'] = chexpert_results
-            
             # Get bounding box results
             if hasattr(evaluator, 'get_bbox_results'):
                 bbox_results = evaluator.get_bbox_results()
@@ -530,10 +511,6 @@ def calc_metric(gt_csv: str,
             mean_metrics[col] = float(np.nanmean(results_df[col].values))
     
     compat_summary['mean_metrics'] = mean_metrics
-    
-    # Add CheXpert results if available
-    if 'chexpert_results' in summary:
-        compat_summary['chexpert'] = summary['chexpert_results']
     
     # Add bounding box results if available  
     if 'bounding_box_results' in summary:

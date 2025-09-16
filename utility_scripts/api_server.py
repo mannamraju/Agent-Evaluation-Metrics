@@ -139,7 +139,7 @@ async def root():
     """Root endpoint - comprehensive health check with GPU info"""
     available_metrics = [
         "bleu", "rouge", "bertscore", "semantic_embedding", 
-        "radgraph", "chexpert", "composite", "bbox"
+        "radgraph", "composite", "bbox"
     ]
     
     gpu_info = {}
@@ -486,12 +486,6 @@ async def list_available_metrics():
             "gpu_optimized": True,
             "recommended_batch_size": "Smaller batches due to graph processing"
         },
-        "chexpert": {
-            "description": "GPU-accelerated CheXpert label accuracy for medical conditions",
-            "output_columns": ["chexpert_micro_f1", "chexpert_macro_f1"],
-            "gpu_optimized": True,
-            "recommended_batch_size": "Large batches supported"
-        },
         "composite": {
             "description": "Composite metric combining multiple scores",
             "output_columns": ["composite_score"],
@@ -513,7 +507,7 @@ async def list_available_metrics():
             "gpu_available": azure_config.device.startswith("cuda"),
             "device": azure_config.device,
             "gpu_memory_gb": azure_config.gpu_memory_gb,
-            "recommended_metrics_for_gpu": ["bertscore", "semantic_embedding", "chexpert"]
+            "recommended_metrics_for_gpu": ["bertscore", "semantic_embedding"]
         }
     
     return {
