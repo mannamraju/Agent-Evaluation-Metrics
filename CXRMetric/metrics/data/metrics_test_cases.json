@@ -1,0 +1,272 @@
+{
+  "bleu": [
+    {
+      "reference": "The chest X-ray shows clear lungs bilaterally with no acute cardiopulmonary abnormalities.",
+      "candidate": "Bilateral lungs are clear without acute cardiopulmonary findings."
+    },
+    {
+      "reference": "Heart size is within normal limits. No pleural effusion or pneumothorax identified.",
+      "candidate": "Normal cardiac silhouette. No effusion or pneumothorax seen."
+    },
+    {
+      "reference": "There is mild cardiomegaly. No acute pulmonary edema.",
+      "candidate": "Heart is mildly enlarged. No signs of pulmonary edema."
+    },
+    {
+      "reference": "Lungs demonstrate hyperinflation consistent with COPD. No pneumonia.",
+      "candidate": "Hyperinflated lungs suggesting COPD. No infiltrates present."
+    },
+    {
+      "reference": "Small right pleural effusion noted. Otherwise unremarkable.",
+      "candidate": "Minor right-sided pleural fluid. Rest of study normal."
+    },
+    {
+      "reference": "No acute cardiopulmonary abnormalities identified on chest radiograph.",
+      "candidate": "No acute abnormalities seen on chest X-ray."
+    },
+    {
+      "reference": "Bilateral lower lobe atelectasis present. No consolidation.",
+      "candidate": "Atelectasis in both lower lobes. No infiltrate identified."
+    },
+    {
+      "reference": "Normal cardiac silhouette and clear lung fields bilaterally.",
+      "candidate": "Heart and lungs appear normal on radiograph."
+    }
+  ],
+  "bleu_strictness": [
+    {
+      "reference": "No acute cardiopulmonary abnormalities are identified.",
+      "candidate": "No acute abnormalities are identified.",
+      "description": "Missing one medical term"
+    },
+    {
+      "reference": "The heart is normal in size and shape.",
+      "candidate": "Heart is normal in size and shape.",
+      "description": "Missing article \"The\""
+    },
+    {
+      "reference": "Bilateral lower lobe consolidation present.",
+      "candidate": "Consolidation is present in bilateral lower lobes.",
+      "description": "Word order variation"
+    }
+  ],
+  "bleu_improved": [
+    {
+      "reference": "The chest X-ray shows clear lungs bilaterally with no acute cardiopulmonary abnormalities.",
+      "candidate": "Bilateral lungs are clear without acute cardiopulmonary findings."
+    },
+    {
+      "reference": "Heart size is within normal limits. No pleural effusion or pneumothorax identified.",
+      "candidate": "Normal cardiac silhouette. No effusion or pneumothorax seen."
+    },
+    {
+      "reference": "There is mild cardiomegaly. No acute pulmonary edema.",
+      "candidate": "Heart is mildly enlarged. No signs of pulmonary edema."
+    },
+    {
+      "reference": "Lungs demonstrate hyperinflation consistent with COPD. No pneumonia.",
+      "candidate": "Hyperinflated lungs suggesting COPD. No infiltrates present."
+    },
+    {
+      "reference": "No acute cardiopulmonary abnormalities are identified.",
+      "candidate": "No acute abnormalities are identified."
+    }
+  ],
+  "bleu_comparison": [
+    {
+      "reference": "The chest X-ray shows clear lungs bilaterally with no acute cardiopulmonary abnormalities.",
+      "candidate": "Bilateral lungs are clear without acute cardiopulmonary findings.",
+      "description": "Similar clinical meaning, different wording"
+    },
+    {
+      "reference": "Heart size is within normal limits. No pleural effusion or pneumothorax identified.",
+      "candidate": "Normal cardiac silhouette. No effusion or pneumothorax seen.",
+      "description": "Medical synonyms and abbreviations"
+    },
+    {
+      "reference": "No acute cardiopulmonary abnormalities are identified.",
+      "candidate": "No acute abnormalities are identified.",
+      "description": "Missing medical term (cardiopulmonary)"
+    },
+    {
+      "reference": "The heart is normal in size and shape.",
+      "candidate": "Heart is normal in size and shape.",
+      "description": "Missing article only"
+    }
+  ],
+  "bertscore": [
+    {
+      "reference": "The chest X-ray shows clear lungs bilaterally with no acute cardiopulmonary abnormalities.",
+      "candidate": "Bilateral lungs are clear without acute cardiopulmonary findings.",
+      "expected": "High semantic similarity"
+    },
+    {
+      "reference": "Heart size is within normal limits. No pleural effusion identified.",
+      "candidate": "Normal cardiac silhouette. No effusion present.",
+      "expected": "Good semantic similarity"
+    },
+    {
+      "reference": "There is mild cardiomegaly noted on the chest radiograph.",
+      "candidate": "The heart appears mildly enlarged on chest X-ray.",
+      "expected": "Good paraphrase detection"
+    },
+    {
+      "reference": "Lungs demonstrate hyperinflation consistent with COPD.",
+      "candidate": "Hyperinflated lungs suggesting chronic obstructive pulmonary disease.",
+      "expected": "Medical terminology understanding"
+    },
+    {
+      "reference": "No acute cardiopulmonary abnormalities identified.",
+      "candidate": "No acute heart or lung problems detected.",
+      "expected": "Clinical vs simple language"
+    },
+    {
+      "reference": "Small right pleural effusion noted.",
+      "candidate": "Minor fluid collection in right chest cavity.",
+      "expected": "Medical concept translation"
+    },
+    {
+      "reference": "Normal cardiac silhouette and clear lung fields.",
+      "candidate": "Heart and lungs appear normal on radiograph.",
+      "expected": "Technical vs descriptive language"
+    },
+    {
+      "reference": "Bilateral lower lobe atelectasis present.",
+      "candidate": "Collapse seen in both lower lung sections.",
+      "expected": "Medical term explanation"
+    }
+  ],
+  "bertscore_comparison": [
+    {
+      "reference": "The heart is normal in size and shape.",
+      "candidate": "Cardiac silhouette appears within normal limits.",
+      "case": "Semantic Equivalence",
+      "bleu_expected": "Low (different words)",
+      "bertscore_expected": "High (same meaning)"
+    },
+    {
+      "reference": "No acute cardiopulmonary abnormalities identified.",
+      "candidate": "No acute heart or lung problems detected.",
+      "case": "Medical Paraphrasing",
+      "bleu_expected": "Low (clinical vs simple terms)",
+      "bertscore_expected": "High (equivalent meaning)"
+    },
+    {
+      "reference": "Bilateral lower lobe consolidation present.",
+      "candidate": "Consolidation is seen in both lower lobes.",
+      "case": "Word Order Variation",
+      "bleu_expected": "Medium (some word overlap)",
+      "bertscore_expected": "High (same clinical finding)"
+    },
+    {
+      "reference": "Mild cardiomegaly noted.",
+      "candidate": "Heart is slightly enlarged.",
+      "case": "Clinical Terminology",
+      "bleu_expected": "Very low (no word overlap)",
+      "bertscore_expected": "High (medical synonym)"
+    }
+  ],
+  "bertscore_sample_reports": [
+    {
+      "study_id": 1,
+      "gt": "The chest X-ray shows clear lungs bilaterally with no acute cardiopulmonary abnormalities.",
+      "pred": "Bilateral lungs are clear without acute cardiopulmonary findings."
+    },
+    {
+      "study_id": 2,
+      "gt": "Heart size is within normal limits. No pleural effusion or pneumothorax identified.",
+      "pred": "Normal cardiac silhouette. No effusion or pneumothorax seen."
+    },
+    {
+      "study_id": 3,
+      "gt": "There is mild cardiomegaly. No acute pulmonary edema.",
+      "pred": "Heart is mildly enlarged. No signs of pulmonary edema."
+    },
+    {
+      "study_id": 4,
+      "gt": "Lungs demonstrate hyperinflation consistent with COPD. No pneumonia.",
+      "pred": "Hyperinflated lungs suggesting COPD. No infiltrates present."
+    },
+    {
+      "study_id": 5,
+      "gt": "Small right pleural effusion noted. Otherwise unremarkable.",
+      "pred": "Minor right-sided pleural fluid. Rest of study normal."
+    }
+  ],
+  "perplexity": [
+    {
+      "reference": "The chest X-ray shows clear lungs with no acute cardiopulmonary abnormalities.",
+      "generated": "Chest radiograph demonstrates clear lung fields without acute findings."
+    },
+    {
+      "reference": "There is evidence of pneumonia in the right lower lobe with associated pleural effusion.",
+      "generated": "Right lower lobe pneumonia is present with accompanying pleural fluid."
+    },
+    {
+      "reference": "Cardiac silhouette is enlarged consistent with cardiomegaly. No acute pulmonary edema.",
+      "generated": "The heart size is increased suggesting cardiac enlargement. Lungs are clear."
+    },
+    {
+      "reference": "Bilateral infiltrates are seen consistent with pulmonary edema.",
+      "generated": "There are bilateral lung infiltrates indicating fluid accumulation."
+    },
+    {
+      "reference": "No pneumothorax or pleural effusion is identified on this chest radiograph.",
+      "generated": "Chest X-ray shows no collapsed lung or fluid in the pleural space."
+    },
+    {
+      "reference": "Multiple rib fractures are noted on the right side with no pneumothorax.",
+      "generated": "Several broken ribs are visible on the right without lung collapse."
+    },
+    {
+      "reference": "The lungs are hyperinflated suggesting chronic obstructive pulmonary disease.",
+      "generated": "Lung hyperinflation is present suggesting COPD changes."
+    },
+    {
+      "reference": "A large mass lesion is seen in the right upper lobe concerning for malignancy.",
+      "generated": "There is a large nodule in the right upper lung suspicious for cancer."
+    }
+  ],
+  "rouge": [
+    {
+      "reference": "The chest X-ray shows clear lungs with no acute cardiopulmonary abnormalities.",
+      "generated": "Chest radiograph demonstrates clear lung fields without acute abnormalities."
+    },
+    {
+      "reference": "There is evidence of pneumonia in the right lower lobe with consolidation.",
+      "generated": "Right lower lobe pneumonia is present with areas of consolidation visible."
+    },
+    {
+      "reference": "Cardiac silhouette appears enlarged suggesting possible cardiomegaly.",
+      "generated": "The heart size appears increased, indicating cardiomegaly."
+    },
+    {
+      "reference": "No acute cardiopulmonary abnormalities are identified on this examination.",
+      "generated": "This chest X-ray shows no significant cardiopulmonary findings."
+    },
+    {
+      "reference": "Bilateral infiltrates are present consistent with pulmonary edema.",
+      "generated": "There are bilateral lung infiltrates suggesting pulmonary edema."
+    },
+    {
+      "reference": "Small pleural effusion is noted on the right side.",
+      "generated": "A small right-sided pleural effusion is observed."
+    },
+    {
+      "reference": "The lungs are hyperinflated suggesting chronic obstructive pulmonary disease.",
+      "generated": "Lung hyperinflation is seen, consistent with COPD."
+    },
+    {
+      "reference": "Atelectasis is present in the left lower lobe.",
+      "generated": "Left lower lobe atelectasis is identified on the image."
+    }
+  ],
+  "rouge_unit": [
+    [[], [], 0],
+    [["a"], [], 0],
+    [["a"], ["a"], 1],
+    [["a", "b", "c"], ["a", "b", "c"], 3],
+    [["a", "b", "c"], ["a", "c"], 2],
+    [["the", "chest", "x-ray"], ["chest", "x-ray", "shows"], 2]
+  ]
+}

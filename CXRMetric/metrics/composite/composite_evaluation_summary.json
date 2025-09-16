@@ -1,0 +1,261 @@
+[
+  {
+    "test_run": "2025-09-03T08:18:36.048434",
+    "status": "setup_complete",
+    "notes": "Composite metrics infrastructure established",
+    "tests_passed": 11,
+    "tests_skipped": 1
+  },
+  {
+    "timestamp": "2025-09-03T10:39:29.651462",
+    "evaluation_type": "comprehensive_composite",
+    "configuration": {
+      "test_type": "comprehensive",
+      "components_available": true,
+      "missing_components": [],
+      "timestamp": "2025-09-03T10:39:29.651441",
+      "environment": {
+        "python_version": "3.13.7",
+        "sklearn_available": true,
+        "models_detected": 0
+      }
+    },
+    "results": {},
+    "test_details": {
+      "test_results": {
+        "package_availability": {
+          "status": "passed",
+          "duration_seconds": 7.935367,
+          "components_available": true,
+          "missing_components": [],
+          "details": {
+            "scikit_learn": true,
+            "model_files_found": 0,
+            "total_components_checked": 1
+          }
+        },
+        "composite_evaluation": {
+          "status": "failed",
+          "duration_seconds": 74.829819,
+          "error": "No evaluation results returned",
+          "details": {
+            "likely_cause": "Model loading or import issues"
+          }
+        },
+        "educational_demo": {
+          "status": "passed",
+          "duration_seconds": 0.005192,
+          "demonstrations": [
+            "advantages",
+            "feature_importance"
+          ],
+          "details": {
+            "advantages_shown": 5,
+            "feature_analysis_models": 2
+          }
+        },
+        "feature_analysis": {
+          "status": "passed",
+          "duration_seconds": 0.005006,
+          "models_analyzed": [
+            "RadCliQ-v0",
+            "RadCliQ-v1"
+          ],
+          "features_analyzed": [
+            "bleu_score",
+            "bertscore",
+            "semantic_embedding",
+            "radgraph_f1"
+          ],
+          "details": {
+            "weight_differences_identified": true,
+            "clinical_focus_evolution": "v1 shows enhanced clinical relevance"
+          }
+        }
+      },
+      "performance_metrics": {
+        "total_test_duration_seconds": 82.776616,
+        "average_test_duration": 20.694154,
+        "fastest_test": 0.005006,
+        "slowest_test": 74.829819
+      },
+      "error_logs": [],
+      "warnings": []
+    },
+    "summary": {
+      "tests_executed": 4,
+      "tests_passed": 3,
+      "tests_failed": 1,
+      "tests_skipped": 0,
+      "overall_status": "limited"
+    }
+  },
+  {
+    "timestamp": "2025-09-03T10:41:31.192881",
+    "evaluation_type": "comprehensive_composite",
+    "configuration": {
+      "test_type": "comprehensive",
+      "components_available": true,
+      "missing_components": [],
+      "timestamp": "2025-09-03T10:41:31.192847",
+      "environment": {
+        "python_version": "3.13.7",
+        "sklearn_available": true,
+        "models_detected": 0
+      }
+    },
+    "results": {},
+    "test_details": {
+      "test_results": {
+        "package_availability": {
+          "status": "passed",
+          "duration_seconds": 2.072027,
+          "components_available": true,
+          "missing_components": [],
+          "details": {
+            "scikit_learn": true,
+            "model_files_found": 0,
+            "total_components_checked": 1
+          }
+        },
+        "composite_evaluation": {
+          "status": "failed",
+          "duration_seconds": 10.341595,
+          "error": "No evaluation results returned",
+          "details": {
+            "likely_cause": "Model loading or import issues"
+          }
+        },
+        "educational_demo": {
+          "status": "passed",
+          "duration_seconds": 0.004508,
+          "demonstrations": [
+            "advantages",
+            "feature_importance"
+          ],
+          "details": {
+            "advantages_shown": 5,
+            "feature_analysis_models": 2
+          }
+        },
+        "feature_analysis": {
+          "status": "passed",
+          "duration_seconds": 0.005141,
+          "models_analyzed": [
+            "RadCliQ-v0",
+            "RadCliQ-v1"
+          ],
+          "features_analyzed": [
+            "bleu_score",
+            "bertscore",
+            "semantic_embedding",
+            "radgraph_f1"
+          ],
+          "details": {
+            "weight_differences_identified": true,
+            "clinical_focus_evolution": "v1 shows enhanced clinical relevance"
+          }
+        }
+      },
+      "performance_metrics": {
+        "total_test_duration_seconds": 12.424398,
+        "average_test_duration": 3.1060995,
+        "fastest_test": 0.004508,
+        "slowest_test": 10.341595
+      },
+      "error_logs": [],
+      "warnings": []
+    },
+    "summary": {
+      "tests_executed": 4,
+      "tests_passed": 3,
+      "tests_failed": 1,
+      "tests_skipped": 0,
+      "overall_status": "limited"
+    }
+  },
+  {
+    "timestamp": "2025-09-03T14:47:43.608092",
+    "evaluation_type": "comprehensive_composite",
+    "configuration": {
+      "test_type": "comprehensive",
+      "components_available": true,
+      "missing_components": [],
+      "timestamp": "2025-09-03T14:47:43.607788",
+      "environment": {
+        "python_version": "3.13.7",
+        "sklearn_available": true,
+        "models_detected": 0
+      }
+    },
+    "results": {},
+    "test_details": {
+      "test_results": {
+        "package_availability": {
+          "status": "passed",
+          "duration_seconds": 3.033902,
+          "components_available": true,
+          "missing_components": [],
+          "details": {
+            "scikit_learn": true,
+            "model_files_found": 0,
+            "total_components_checked": 1
+          }
+        },
+        "composite_evaluation": {
+          "status": "failed",
+          "duration_seconds": 17.408058,
+          "error": "No evaluation results returned",
+          "details": {
+            "likely_cause": "Model loading or import issues"
+          }
+        },
+        "educational_demo": {
+          "status": "passed",
+          "duration_seconds": 0.003756,
+          "demonstrations": [
+            "advantages",
+            "feature_importance"
+          ],
+          "details": {
+            "advantages_shown": 5,
+            "feature_analysis_models": 2
+          }
+        },
+        "feature_analysis": {
+          "status": "passed",
+          "duration_seconds": 0.006381,
+          "models_analyzed": [
+            "RadCliQ-v0",
+            "RadCliQ-v1"
+          ],
+          "features_analyzed": [
+            "bleu_score",
+            "bertscore",
+            "semantic_embedding",
+            "radgraph_f1"
+          ],
+          "details": {
+            "weight_differences_identified": true,
+            "clinical_focus_evolution": "v1 shows enhanced clinical relevance"
+          }
+        }
+      },
+      "performance_metrics": {
+        "total_test_duration_seconds": 20.455104,
+        "average_test_duration": 5.113776,
+        "fastest_test": 0.003756,
+        "slowest_test": 17.408058
+      },
+      "error_logs": [],
+      "warnings": []
+    },
+    "summary": {
+      "tests_executed": 4,
+      "tests_passed": 3,
+      "tests_failed": 1,
+      "tests_skipped": 0,
+      "overall_status": "limited"
+    }
+  }
+]

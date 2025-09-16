@@ -1,0 +1,6 @@
+{
+  "deprecated": true,
+  "use": "metrics_test_cases.json",
+  "key": "rouge_unit",
+  "note": "This per-metric file is deprecated — canonical data is stored in metrics_test_cases.json"
+}

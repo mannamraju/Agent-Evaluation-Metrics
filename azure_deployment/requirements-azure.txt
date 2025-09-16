@@ -1,0 +1,13 @@
+# Azure App Service deployment configuration
+# For deploying the FastAPI web service
+
+# App Service specific requirements
+fastapi==0.68.0
+uvicorn[standard]==0.15.0
+python-multipart==0.0.5
+azure-storage-blob==12.8.1
+azure-keyvault-secrets==4.3.0
+azure-identity==1.6.0
+gunicorn==20.1.0
+
+# Add to main requirements.txt for Azure deployment

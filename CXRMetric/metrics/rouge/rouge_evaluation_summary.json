@@ -1,0 +1,527 @@
+[
+  {
+    "timestamp": "2025-09-03T14:41:03.152452",
+    "evaluation_type": "comprehensive_rouge",
+    "configuration": {
+      "test_type": "comprehensive",
+      "components_available": true,
+      "missing_components": [],
+      "timestamp": "2025-09-03T14:41:03.152403",
+      "environment": {
+        "python_version": "3.13.7",
+        "dependencies_required": 0,
+        "pure_python": true
+      }
+    },
+    "results": {},
+    "test_details": {
+      "test_results": {
+        "package_availability": {
+          "status": "passed",
+          "duration_seconds": 0.001687,
+          "components_available": true,
+          "missing_components": [],
+          "details": {
+            "pandas_available": true,
+            "numpy_available": true,
+            "regex_available": true,
+            "external_dependencies": 0
+          }
+        },
+        "rouge_evaluation": {
+          "status": "failed",
+          "duration_seconds": 0.163188,
+          "error": "No evaluation results returned",
+          "details": {
+            "likely_cause": "Import or algorithm issues"
+          }
+        },
+        "educational_demo": {
+          "status": "passed",
+          "duration_seconds": 0.007022,
+          "demonstrations": [
+            "advantages",
+            "algorithm_analysis"
+          ],
+          "details": {
+            "advantages_shown": 5,
+            "comparisons_made": 4
+          }
+        },
+        "algorithm_analysis": {
+          "status": "passed",
+          "duration_seconds": 0.007584,
+          "aspects_analyzed": [
+            "Time Complexity",
+            "Space Complexity",
+            "LCS Algorithm",
+            "Beta Parameter"
+          ],
+          "details": {
+            "complexity_analysis": "O(m \u00d7 n) time and space",
+            "performance_characteristics": "Sub-millisecond per report pair"
+          }
+        }
+      },
+      "performance_metrics": {
+        "total_test_duration_seconds": 0.180798,
+        "average_test_duration": 0.0451995,
+        "fastest_test": 0.001687,
+        "slowest_test": 0.163188
+      },
+      "error_logs": [],
+      "warnings": []
+    },
+    "summary": {
+      "tests_executed": 4,
+      "tests_passed": 3,
+      "tests_failed": 1,
+      "tests_skipped": 0,
+      "overall_status": "limited"
+    }
+  },
+  {
+    "timestamp": "2025-09-03T14:42:37.862689",
+    "evaluation_type": "comprehensive_rouge",
+    "configuration": {
+      "test_type": "comprehensive",
+      "components_available": true,
+      "missing_components": [],
+      "timestamp": "2025-09-03T14:42:37.862655",
+      "environment": {
+        "python_version": "3.13.7",
+        "dependencies_required": 0,
+        "pure_python": true
+      }
+    },
+    "results": {},
+    "test_details": {
+      "test_results": {
+        "package_availability": {
+          "status": "passed",
+          "duration_seconds": 0.00052,
+          "components_available": true,
+          "missing_components": [],
+          "details": {
+            "pandas_available": true,
+            "numpy_available": true,
+            "regex_available": true,
+            "external_dependencies": 0
+          }
+        },
+        "rouge_evaluation": {
+          "status": "failed",
+          "duration_seconds": 66.291206,
+          "error": "No evaluation results returned",
+          "details": {
+            "likely_cause": "Import or algorithm issues"
+          }
+        },
+        "educational_demo": {
+          "status": "passed",
+          "duration_seconds": 0.018475,
+          "demonstrations": [
+            "advantages",
+            "algorithm_analysis"
+          ],
+          "details": {
+            "advantages_shown": 5,
+            "comparisons_made": 4
+          }
+        },
+        "algorithm_analysis": {
+          "status": "passed",
+          "duration_seconds": 0.013659,
+          "aspects_analyzed": [
+            "Time Complexity",
+            "Space Complexity",
+            "LCS Algorithm",
+            "Beta Parameter"
+          ],
+          "details": {
+            "complexity_analysis": "O(m \u00d7 n) time and space",
+            "performance_characteristics": "Sub-millisecond per report pair"
+          }
+        }
+      },
+      "performance_metrics": {
+        "total_test_duration_seconds": 66.325221,
+        "average_test_duration": 16.58130525,
+        "fastest_test": 0.00052,
+        "slowest_test": 66.291206
+      },
+      "error_logs": [],
+      "warnings": []
+    },
+    "summary": {
+      "tests_executed": 4,
+      "tests_passed": 3,
+      "tests_failed": 1,
+      "tests_skipped": 0,
+      "overall_status": "limited"
+    }
+  },
+  {
+    "timestamp": "2025-09-03T14:44:17.420635",
+    "evaluation_type": "comprehensive_rouge",
+    "configuration": {
+      "test_type": "comprehensive",
+      "components_available": true,
+      "missing_components": [],
+      "timestamp": "2025-09-03T14:44:17.420602",
+      "environment": {
+        "python_version": "3.13.7",
+        "dependencies_required": 0,
+        "pure_python": true
+      }
+    },
+    "results": {
+      "num_samples": 8,
+      "rouge_configurations": {
+        "ROUGE-L (\u03b2=1.0)": {
+          "mean": 0.24369062842528316,
+          "std": 0.1282067283216529,
+          "min": 0.0,
+          "max": 0.375,
+          "samples": 8,
+          "beta": 1.0
+        },
+        "ROUGE-L (\u03b2=1.2)": {
+          "mean": 0.24190036132382353,
+          "std": 0.12681341385803901,
+          "min": 0.0,
+          "max": 0.375,
+          "samples": 8,
+          "beta": 1.2
+        },
+        "ROUGE-L (\u03b2=2.0)": {
+          "mean": 0.23804330671718582,
+          "std": 0.12407717981425098,
+          "min": 0.0,
+          "max": 0.375,
+          "samples": 8,
+          "beta": 2.0
+        }
+      },
+      "sample_reports": {
+        "reference_avg_length": 66.75,
+        "generated_avg_length": 61.125,
+        "cases_tested": 8
+      }
+    },
+    "test_details": {
+      "test_results": {
+        "package_availability": {
+          "status": "passed",
+          "duration_seconds": 0.000535,
+          "components_available": true,
+          "missing_components": [],
+          "details": {
+            "pandas_available": true,
+            "numpy_available": true,
+            "regex_available": true,
+            "external_dependencies": 0
+          }
+        },
+        "rouge_evaluation": {
+          "status": "passed",
+          "duration_seconds": 12.944157,
+          "configurations_tested": [
+            "ROUGE-L (\u03b2=1.0)",
+            "ROUGE-L (\u03b2=1.2)",
+            "ROUGE-L (\u03b2=2.0)"
+          ],
+          "samples_processed": 8,
+          "details": {
+            "beta_parameters_tested": 3,
+            "medical_reports_evaluated": 8,
+            "avg_reference_length": 66.75
+          }
+        },
+        "educational_demo": {
+          "status": "passed",
+          "duration_seconds": 0.004255,
+          "demonstrations": [
+            "advantages",
+            "algorithm_analysis"
+          ],
+          "details": {
+            "advantages_shown": 5,
+            "comparisons_made": 4
+          }
+        },
+        "algorithm_analysis": {
+          "status": "passed",
+          "duration_seconds": 0.004524,
+          "aspects_analyzed": [
+            "Time Complexity",
+            "Space Complexity",
+            "LCS Algorithm",
+            "Beta Parameter"
+          ],
+          "details": {
+            "complexity_analysis": "O(m \u00d7 n) time and space",
+            "performance_characteristics": "Sub-millisecond per report pair"
+          }
+        }
+      },
+      "performance_metrics": {
+        "total_test_duration_seconds": 12.95472,
+        "average_test_duration": 3.23868,
+        "fastest_test": 0.000535,
+        "slowest_test": 12.944157
+      },
+      "error_logs": [],
+      "warnings": []
+    },
+    "summary": {
+      "tests_executed": 4,
+      "tests_passed": 4,
+      "tests_failed": 0,
+      "tests_skipped": 0,
+      "overall_status": "completed"
+    }
+  },
+  {
+    "timestamp": "2025-09-08T09:24:38.147175",
+    "evaluation_type": "comprehensive_rouge",
+    "configuration": {
+      "test_type": "comprehensive",
+      "components_available": true,
+      "missing_components": [],
+      "timestamp": "2025-09-08T09:24:38.147146",
+      "environment": {
+        "python_version": "3.13.7",
+        "dependencies_required": 0,
+        "pure_python": true
+      }
+    },
+    "results": {
+      "num_samples": 8,
+      "rouge_configurations": {
+        "ROUGE-L (\u03b2=1.0)": {
+          "mean": 0.24369062842528316,
+          "std": 0.1282067283216529,
+          "min": 0.0,
+          "max": 0.375,
+          "samples": 8,
+          "beta": 1.0
+        },
+        "ROUGE-L (\u03b2=1.2)": {
+          "mean": 0.24190036132382353,
+          "std": 0.12681341385803901,
+          "min": 0.0,
+          "max": 0.375,
+          "samples": 8,
+          "beta": 1.2
+        },
+        "ROUGE-L (\u03b2=2.0)": {
+          "mean": 0.23804330671718582,
+          "std": 0.12407717981425098,
+          "min": 0.0,
+          "max": 0.375,
+          "samples": 8,
+          "beta": 2.0
+        }
+      },
+      "sample_reports": {
+        "reference_avg_length": 66.75,
+        "generated_avg_length": 61.125,
+        "cases_tested": 8
+      }
+    },
+    "test_details": {
+      "test_results": {
+        "package_availability": {
+          "status": "passed",
+          "duration_seconds": 0.000262,
+          "components_available": true,
+          "missing_components": [],
+          "details": {
+            "pandas_available": true,
+            "numpy_available": true,
+            "regex_available": true,
+            "external_dependencies": 0
+          }
+        },
+        "rouge_evaluation": {
+          "status": "passed",
+          "duration_seconds": 17.050353,
+          "configurations_tested": [
+            "ROUGE-L (\u03b2=1.0)",
+            "ROUGE-L (\u03b2=1.2)",
+            "ROUGE-L (\u03b2=2.0)"
+          ],
+          "samples_processed": 8,
+          "details": {
+            "beta_parameters_tested": 3,
+            "medical_reports_evaluated": 8,
+            "avg_reference_length": 66.75
+          }
+        },
+        "educational_demo": {
+          "status": "passed",
+          "duration_seconds": 0.010519,
+          "demonstrations": [
+            "advantages",
+            "algorithm_analysis"
+          ],
+          "details": {
+            "advantages_shown": 5,
+            "comparisons_made": 4
+          }
+        },
+        "algorithm_analysis": {
+          "status": "passed",
+          "duration_seconds": 0.008209,
+          "aspects_analyzed": [
+            "Time Complexity",
+            "Space Complexity",
+            "LCS Algorithm",
+            "Beta Parameter"
+          ],
+          "details": {
+            "complexity_analysis": "O(m \u00d7 n) time and space",
+            "performance_characteristics": "Sub-millisecond per report pair"
+          }
+        }
+      },
+      "performance_metrics": {
+        "total_test_duration_seconds": 17.071348,
+        "average_test_duration": 4.267837,
+        "fastest_test": 0.000262,
+        "slowest_test": 17.050353
+      },
+      "error_logs": [],
+      "warnings": []
+    },
+    "summary": {
+      "tests_executed": 4,
+      "tests_passed": 4,
+      "tests_failed": 0,
+      "tests_skipped": 0,
+      "overall_status": "completed"
+    }
+  },
+  {
+    "timestamp": "2025-09-14T18:03:36.324823",
+    "evaluation_type": "comprehensive_rouge",
+    "configuration": {
+      "test_type": "comprehensive",
+      "components_available": true,
+      "missing_components": [],
+      "timestamp": "2025-09-14T18:03:36.324812",
+      "environment": {
+        "python_version": "3.13.7",
+        "dependencies_required": 0,
+        "pure_python": true
+      }
+    },
+    "results": {
+      "num_samples": 8,
+      "rouge_configurations": {
+        "ROUGE-L (\u03b2=1.0)": {
+          "mean": 0.24369062842528316,
+          "std": 0.1282067283216529,
+          "min": 0.0,
+          "max": 0.375,
+          "samples": 8,
+          "beta": 1.0
+        },
+        "ROUGE-L (\u03b2=1.2)": {
+          "mean": 0.24190036132382353,
+          "std": 0.12681341385803901,
+          "min": 0.0,
+          "max": 0.375,
+          "samples": 8,
+          "beta": 1.2
+        },
+        "ROUGE-L (\u03b2=2.0)": {
+          "mean": 0.23804330671718582,
+          "std": 0.12407717981425098,
+          "min": 0.0,
+          "max": 0.375,
+          "samples": 8,
+          "beta": 2.0
+        }
+      },
+      "sample_reports": {
+        "reference_avg_length": 66.75,
+        "generated_avg_length": 61.125,
+        "cases_tested": 8
+      }
+    },
+    "test_details": {
+      "test_results": {
+        "package_availability": {
+          "status": "passed",
+          "duration_seconds": 0.000411,
+          "components_available": true,
+          "missing_components": [],
+          "details": {
+            "pandas_available": true,
+            "numpy_available": true,
+            "regex_available": true,
+            "external_dependencies": 0
+          }
+        },
+        "rouge_evaluation": {
+          "status": "passed",
+          "duration_seconds": 49.72961,
+          "configurations_tested": [
+            "ROUGE-L (\u03b2=1.0)",
+            "ROUGE-L (\u03b2=1.2)",
+            "ROUGE-L (\u03b2=2.0)"
+          ],
+          "samples_processed": 8,
+          "details": {
+            "beta_parameters_tested": 3,
+            "medical_reports_evaluated": 8,
+            "avg_reference_length": 66.75
+          }
+        },
+        "educational_demo": {
+          "status": "passed",
+          "duration_seconds": 0.001175,
+          "demonstrations": [
+            "advantages",
+            "algorithm_analysis"
+          ],
+          "details": {
+            "advantages_shown": 5,
+            "comparisons_made": 4
+          }
+        },
+        "algorithm_analysis": {
+          "status": "passed",
+          "duration_seconds": 0.002098,
+          "aspects_analyzed": [
+            "Time Complexity",
+            "Space Complexity",
+            "LCS Algorithm",
+            "Beta Parameter"
+          ],
+          "details": {
+            "complexity_analysis": "O(m \u00d7 n) time and space",
+            "performance_characteristics": "Sub-millisecond per report pair"
+          }
+        }
+      },
+      "performance_metrics": {
+        "total_test_duration_seconds": 49.73381,
+        "average_test_duration": 12.4334525,
+        "fastest_test": 0.000411,
+        "slowest_test": 49.72961
+      },
+      "error_logs": [],
+      "warnings": []
+    },
+    "summary": {
+      "tests_executed": 4,
+      "tests_passed": 4,
+      "tests_failed": 0,
+      "tests_skipped": 0,
+      "overall_status": "completed"
+    }
+  }
+]

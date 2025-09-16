@@ -1,0 +1,125 @@
+[
+  {
+    "timestamp": "2025-09-03T16:30:44.822449",
+    "tests": 4,
+    "passed": 3,
+    "failed": 1,
+    "status": "limited",
+    "test_details": {
+      "Package Availability": {
+        "duration": 58.880732,
+        "status": "passed"
+      },
+      "Perplexity Evaluation": {
+        "duration": 3.602531,
+        "status": "failed"
+      },
+      "Educational Demo": {
+        "duration": 0.013769,
+        "status": "passed"
+      },
+      "Algorithm Analysis": {
+        "duration": 0.020394,
+        "status": "passed"
+      }
+    },
+    "total_duration": 62.517426,
+    "performance_metrics": {
+      "average_test_time": 15.6293565,
+      "fastest_test": 0.013769,
+      "slowest_test": 58.880732
+    }
+  },
+  {
+    "timestamp": "2025-09-03T16:32:31.061616",
+    "tests": 4,
+    "passed": 4,
+    "failed": 0,
+    "status": "completed",
+    "test_details": {
+      "Package Availability": {
+        "duration": 13.86669,
+        "status": "passed"
+      },
+      "Perplexity Evaluation": {
+        "duration": 66.225829,
+        "status": "passed"
+      },
+      "Educational Demo": {
+        "duration": 0.003702,
+        "status": "passed"
+      },
+      "Algorithm Analysis": {
+        "duration": 0.005215,
+        "status": "passed"
+      }
+    },
+    "total_duration": 80.101436,
+    "performance_metrics": {
+      "average_test_time": 20.025359,
+      "fastest_test": 0.003702,
+      "slowest_test": 66.225829
+    },
+    "perplexity_results": {
+      "DistilGPT-2 (Default)": {
+        "generated_ppl": 1077.0421323046087,
+        "reference_ppl": 251.68717526785701,
+        "cross_entropy_gen": 0,
+        "model_config": "DistilGPT-2 (Default)"
+      },
+      "GPT-2 (Small)": {
+        "generated_ppl": 509.250031120983,
+        "reference_ppl": 102.4244687782856,
+        "cross_entropy_gen": 0,
+        "model_config": "GPT-2 (Small)"
+      }
+    },
+    "samples_processed": 8
+  },
+  {
+    "timestamp": "2025-09-03T17:02:10.400330",
+    "tests": 4,
+    "passed": 4,
+    "failed": 0,
+    "status": "completed",
+    "test_details": {
+      "Package Availability": {
+        "duration": 108.978444,
+        "status": "passed"
+      },
+      "Perplexity Evaluation": {
+        "duration": 16.6525,
+        "status": "passed"
+      },
+      "Educational Demo": {
+        "duration": 0.051832,
+        "status": "passed"
+      },
+      "Algorithm Analysis": {
+        "duration": 0.056388,
+        "status": "passed"
+      }
+    },
+    "total_duration": 125.739164,
+    "performance_metrics": {
+      "average_test_time": 31.434791,
+      "fastest_test": 0.051832,
+      "slowest_test": 108.978444
+    },
+    "perplexity_results": {
+      "DistilGPT-2 (Default)": {
+        "generated_ppl": 63.48510647914962,
+        "reference_ppl": 52.11096730325183,
+        "cross_entropy_gen": 0,
+        "model_config": "DistilGPT-2 (Default)"
+      },
+      "GPT-2 (Small)": {
+        "generated_ppl": 54.42240279526182,
+        "reference_ppl": 61.55094096130199,
+        "cross_entropy_gen": 0,
+        "model_config": "GPT-2 (Small)"
+      }
+    },
+    "samples_processed": 8
+  }
+]

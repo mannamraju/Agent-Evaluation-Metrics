@@ -1,0 +1,154 @@
+[
+  {
+    "timestamp": "2025-09-08T09:02:15.348298",
+    "evaluation_type": "bleu",
+    "configuration": {
+      "bleu_variants": [
+        "bleu2",
+        "bleu4"
+      ],
+      "implementation": "custom_fallback",
+      "tokenization": "simple_regex"
+    },
+    "results": {
+      "mean_bleu2": 0.16116535872586982,
+      "mean_bleu4": 0.0,
+      "std_bleu2": 0.14412110207463327,
+      "std_bleu4": 0.0,
+      "num_samples": 8,
+      "individual_bleu2_scores": [
+        0.14305463413380368,
+        0.25630598383971304,
+        0.23570226039551587,
+        0.23168286407366764,
+        0.0,
+        0.42257712736425823,
+        0.0,
+        0.0
+      ],
+      "individual_bleu4_scores": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "high_quality_bleu2_count": 1,
+      "high_quality_bleu4_count": 0,
+      "bleu4_bleu2_ratio": Infinity,
+      "zero_bleu4_count": 8
+    },
+    "summary_stats": {
+      "mean_bleu2": 0.16116535872586982,
+      "mean_bleu4": 0.0,
+      "std_bleu2": 0.14412110207463327,
+      "std_bleu4": 0.0,
+      "num_samples": 8,
+      "bleu4_bleu2_ratio": Infinity,
+      "high_quality_bleu2_count": 1,
+      "high_quality_bleu4_count": 0
+    }
+  },
+  {
+    "timestamp": "2025-09-08T09:02:15.369523",
+    "evaluation_type": "bleu",
+    "configuration": {
+      "evaluation_type": "strictness_analysis"
+    },
+    "results": {
+      "analysis_type": "strictness_analysis",
+      "test_cases": [
+        {
+          "description": "Missing one medical term",
+          "reference": "No acute cardiopulmonary abnormalities are identified.",
+          "candidate": "No acute abnormalities are identified.",
+          "bleu2": 0.7090416310250969,
+          "bleu4": 0.0,
+          "impact": "High"
+        },
+        {
+          "description": "Missing article \"The\"",
+          "reference": "The heart is normal in size and shape.",
+          "candidate": "Heart is normal in size and shape.",
+          "bleu2": 0.8668778997501817,
+          "bleu4": 0.8668778997501817,
+          "impact": "Low"
+        },
+        {
+          "description": "Word order variation",
+          "reference": "Bilateral lower lobe consolidation present.",
+          "candidate": "Consolidation is present in bilateral lower lobes.",
+          "bleu2": 0.3086066999241838,
+          "bleu4": 0.0,
+          "impact": "High"
+        }
+      ]
+    },
+    "summary_stats": {
+      "mean_bleu2": null,
+      "mean_bleu4": null,
+      "std_bleu2": null,
+      "std_bleu4": null,
+      "num_samples": null,
+      "bleu4_bleu2_ratio": null,
+      "high_quality_bleu2_count": null,
+      "high_quality_bleu4_count": null
+    }
+  },
+  {
+    "timestamp": "2025-09-14T22:46:15.017360",
+    "evaluation_type": "bleu",
+    "configuration": {
+      "bleu_variants": [
+        "bleu2",
+        "bleu4"
+      ],
+      "implementation": "custom_fallback",
+      "tokenization": "simple_regex"
+    },
+    "results": {
+      "mean_bleu2": 0.16116535872586982,
+      "mean_bleu4": 0.0,
+      "std_bleu2": 0.14412110207463327,
+      "std_bleu4": 0.0,
+      "num_samples": 8,
+      "individual_bleu2_scores": [
+        0.14305463413380368,
+        0.25630598383971304,
+        0.23570226039551587,
+        0.23168286407366764,
+        0.0,
+        0.42257712736425823,
+        0.0,
+        0.0
+      ],
+      "individual_bleu4_scores": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "high_quality_bleu2_count": 1,
+      "high_quality_bleu4_count": 0,
+      "bleu4_bleu2_ratio": Infinity,
+      "zero_bleu4_count": 8
+    },
+    "summary_stats": {
+      "mean_bleu2": 0.16116535872586982,
+      "mean_bleu4": 0.0,
+      "std_bleu2": 0.14412110207463327,
+      "std_bleu4": 0.0,
+      "num_samples": 8,
+      "bleu4_bleu2_ratio": Infinity,
+      "high_quality_bleu2_count": 1,
+      "high_quality_bleu4_count": 0
+    }
+  }
+]

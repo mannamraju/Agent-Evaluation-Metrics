@@ -1,0 +1,12 @@
+{
+  "chexbert_path": "CXRMetric/CheXbert/chexbert.pth",
+  "radgraph_path": "CXRMetric/dygiepp",
+  "composite_v0_path": "CXRMetric/composite_metric_model.pkl",
+  "composite_v1_path": "CXRMetric/radcliq-v1.pkl",
+  "normalizer_path": "CXRMetric/normalizer.pkl",
+  "cache_dir": "cache",
+  "default_metrics": ["bleu", "rouge", "bertscore"],
+  "heavy_metrics": ["semantic_embedding", "radgraph", "chexpert"],
+  "dataset_metrics": ["chexpert", "bounding_box"],
+  "composite_metrics": ["composite"]
+}

@@ -1,0 +1,56 @@
+{
+  "evaluation_info": {
+    "metrics_computed": [
+      "bertscore"
+    ],
+    "timing": {
+      "bertscore": 23.503124475479126
+    }
+  },
+  "bertscore": {
+    "bertscore": {
+      "mean": 0.4806089401245117,
+      "std": 0.09139353036880493,
+      "min": 0.36235401034355164,
+      "max": 0.6361787915229797,
+      "median": 0.45163559913635254
+    },
+    "bertscore_precision": {
+      "mean": 0.5258766412734985,
+      "std": 0.09533154964447021,
+      "min": 0.42426154017448425,
+      "max": 0.7055796384811401,
+      "median": 0.48309046030044556
+    },
+    "bertscore_recall": {
+      "mean": 0.4353979527950287,
+      "std": 0.09811776876449585,
+      "min": 0.30055367946624756,
+      "max": 0.6109113097190857,
+      "median": 0.4416707158088684
+    },
+    "bertscore_analysis": {
+      "description": "BERTScore uses contextual embeddings for semantic similarity",
+      "model_type": "distilroberta-base",
+      "use_idf": false,
+      "rescale_with_baseline": true,
+      "range": "Typically [-1, 1] but varies by model and baseline",
+      "interpretation": {
+        "advantages": "Captures semantic similarity beyond surface-level matches",
+        "f1_score": "Harmonic mean of precision and recall (most commonly reported)",
+        "use_case": "Good for evaluating semantic content preservation"
+      },
+      "score_characteristics": {
+        "negative_scores_count": 0,
+        "high_scores_pct": "0.0% (> 0.8)",
+        "baseline_note": "Scores rescaled with baseline if enabled"
+      },
+      "precision_vs_recall": {
+        "precision_mean": 0.5258766412734985,
+        "recall_mean": 0.4353979527950287,
+        "difference": 0.09047868847846985,
+        "note": "Precision > Recall suggests conservative generation"
+      }
+    }
+  }
+}

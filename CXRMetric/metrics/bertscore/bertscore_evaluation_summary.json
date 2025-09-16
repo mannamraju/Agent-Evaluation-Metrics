@@ -1,0 +1,115 @@
+[
+  {
+    "timestamp": "2025-09-02T18:34:06.499899",
+    "evaluation_type": "comprehensive_bertscore",
+    "configuration": {
+      "test_type": "comprehensive",
+      "default_model": "distilroberta-base",
+      "timestamp": "2025-09-02T18:34:06.499875"
+    },
+    "results": {
+      "model_type": "distilroberta-base",
+      "mean_f1": 0.44649985432624817,
+      "mean_precision": 0.484973669052124,
+      "mean_recall": 0.40830081701278687,
+      "std_f1": 0.12202347815036774,
+      "num_samples": 8,
+      "individual_scores": {
+        "f1": [
+          0.6132228970527649,
+          0.5394308567047119,
+          0.357657253742218,
+          0.2986988127231598,
+          0.5917103886604309,
+          0.4481799900531769,
+          0.3971521258354187,
+          0.3259465992450714
+        ],
+        "precision": [
+          0.6944929957389832,
+          0.6342625021934509,
+          0.4610006809234619,
+          0.2854054868221283,
+          0.6316800713539124,
+          0.45872431993484497,
+          0.3548561632633209,
+          0.35936710238456726
+        ],
+        "recall": [
+          0.5332592129707336,
+          0.44653570652008057,
+          0.25656500458717346,
+          0.31092119216918945,
+          0.5515092015266418,
+          0.43674349784851074,
+          0.4391428530216217,
+          0.29172980785369873
+        ]
+      },
+      "test_cases": [
+        {
+          "reference": "The chest X-ray shows clear lungs bilaterally with no acute cardiopulmonary abnormalities.",
+          "candidate": "Bilateral lungs are clear without acute cardiopulmonary findings.",
+          "expected": "High semantic similarity"
+        },
+        {
+          "reference": "Heart size is within normal limits. No pleural effusion identified.",
+          "candidate": "Normal cardiac silhouette. No effusion present.",
+          "expected": "Good semantic similarity"
+        },
+        {
+          "reference": "There is mild cardiomegaly noted on the chest radiograph.",
+          "candidate": "The heart appears mildly enlarged on chest X-ray.",
+          "expected": "Good paraphrase detection"
+        },
+        {
+          "reference": "Lungs demonstrate hyperinflation consistent with COPD.",
+          "candidate": "Hyperinflated lungs suggesting chronic obstructive pulmonary disease.",
+          "expected": "Medical terminology understanding"
+        },
+        {
+          "reference": "No acute cardiopulmonary abnormalities identified.",
+          "candidate": "No acute heart or lung problems detected.",
+          "expected": "Clinical vs simple language"
+        },
+        {
+          "reference": "Small right pleural effusion noted.",
+          "candidate": "Minor fluid collection in right chest cavity.",
+          "expected": "Medical concept translation"
+        },
+        {
+          "reference": "Normal cardiac silhouette and clear lung fields.",
+          "candidate": "Heart and lungs appear normal on radiograph.",
+          "expected": "Technical vs descriptive language"
+        },
+        {
+          "reference": "Bilateral lower lobe atelectasis present.",
+          "candidate": "Collapse seen in both lower lung sections.",
+          "expected": "Medical term explanation"
+        }
+      ],
+      "score_distribution": {
+        "high_count": 0,
+        "medium_count": 1,
+        "low_count": 7,
+        "high_pct": 0.0,
+        "medium_pct": 12.5,
+        "low_pct": 87.5
+      },
+      "model_comparison": {
+        "distilroberta-base": {
+          "f1": 0.6132232546806335,
+          "precision": 0.6944933533668518,
+          "recall": 0.5332595705986023,
+          "description": "Fast, lightweight model"
+        },
+        "roberta-base": {
+          "f1": 0.616999089717865,
+          "precision": 0.6872245669364929,
+          "recall": 0.5478708744049072,
+          "description": "Standard RoBERTa model"
+        }
+      }
+    }
+  }
+]
