@@ -32,7 +32,15 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import f1_score, precision_recall_fscore_support
 
 import config
-from CXRMetric.radgraph_evaluate_model import run_radgraph
+import importlib
+RUN_RADGRAPH_AVAILABLE = True
+try:
+    # Delay importing radgraph_evaluate_model until it's needed; if the
+    # radgraph_inference code/folder is missing this avoids immediate ImportError.
+    importlib.import_module('CXRMetric.radgraph_evaluate_model')
+except Exception:
+    RUN_RADGRAPH_AVAILABLE = False
+    # run_radgraph will be imported lazily where needed
 
 """Computes 4 individual metrics and a composite metric on radiology reports."""
 
@@ -221,6 +229,7 @@ def add_semb_col(pred_df, semb_path, gt_path):
 
 def add_radgraph_col(pred_df, entities_path, relations_path):
     """Computes RadGraph F1 and adds scores as a column to prediction df."""
+    from CXRMetric.radgraph_evaluate_model import run_radgraph
     study_id_to_radgraph = {}
     with open(entities_path, "r") as f:
         scores = json.load(f)
@@ -316,9 +325,23 @@ def add_bleu4_col(gt_df, pred_df):
 
 
 def _run_chexbert_labeler(checkpoint_path, csv_path, out_path):
-    """Run the CheXbert labeling script to produce a labeled CSV in out_path/labeled_reports.csv."""
+    """Run the CheXbert labeling script if available; otherwise warn and return None.
+
+    The CheXbert code and model files were removed from this repository. When
+    `checkpoint_path` is not provided or the CheXbert code is missing, this
+    function will print a warning and return None so downstream code handles
+    CheXpert evaluation gracefully.
+    """
     os.makedirs(out_path, exist_ok=True)
-    cmd = f"python CXRMetric/CheXbert/src/label.py -c {checkpoint_path} -d {csv_path} -o {out_path}"
+    if checkpoint_path is None or not os.path.exists(checkpoint_path):
+        print(f"Warning: CheXbert model not available at {checkpoint_path}. Skipping CheXbert labeling.")
+        return None
+    chexbert_script = os.path.join("CXRMetric", "CheXbert", "src", "label.py")
+    if not os.path.exists(chexbert_script):
+        print("Warning: CheXbert labeling code not present in the repository. Skipping CheXbert labeling.")
+        return None
+    # If CheXbert is restored, fallback to the original behavior
+    cmd = f"python {chexbert_script} -c {checkpoint_path} -d {csv_path} -o {out_path}"
     print("Running CheXbert labeler:", cmd)
     os.system(cmd)
     labeled_csv = os.path.join(out_path, "labeled_reports.csv")
@@ -514,37 +537,69 @@ def calc_metric(gt_csv, pred_csv, out_csv, use_idf): # TODO: support single metr
     # BERTScore
     pred = add_bertscore_col(gt, pred, use_idf)
 
-    # run encode.py to make the semb column
+    # Semantic embedding (CheXbert) — run only if model and code are present
     os.makedirs(cache_path, exist_ok=True)
-    os.system(f"python CXRMetric/CheXbert/src/encode.py -c {CHEXBERT_PATH} -d {cache_pred_csv} -o {pred_embed_path}")
-    os.system(f"python CXRMetric/CheXbert/src/encode.py -c {CHEXBERT_PATH} -d {cache_gt_csv} -o {gt_embed_path}")
-    pred = add_semb_col(pred, pred_embed_path, gt_embed_path)
+    pred['semb_score'] = [0.0] * len(pred)
+    chexbert_script = os.path.join('CXRMetric', 'CheXbert', 'src', 'encode.py')
+    if CHEXBERT_PATH and os.path.exists(CHEXBERT_PATH) and os.path.exists(chexbert_script):
+        try:
+            os.system(f"python {chexbert_script} -c {CHEXBERT_PATH} -d {cache_pred_csv} -o {pred_embed_path}")
+            os.system(f"python {chexbert_script} -c {CHEXBERT_PATH} -d {cache_gt_csv} -o {gt_embed_path}")
+            pred = add_semb_col(pred, pred_embed_path, gt_embed_path)
+        except Exception as e:
+            print(f"Warning: semantic embedding computation failed: {e}")
+            pred['semb_score'] = [0.0] * len(pred)
+    else:
+        print("Warning: CheXbert model or code not available — semantic embedding scores set to 0.0")
 
-    # run radgraph to create that column
+    # RadGraph inference — run only if RadGraph model/code are present
     entities_path = os.path.join(cache_path, "entities_cache.json")
     relations_path = os.path.join(cache_path, "relations_cache.json")
-    run_radgraph(cache_gt_csv, cache_pred_csv, cache_path, RADGRAPH_PATH,
-                 entities_path, relations_path)
-    pred = add_radgraph_col(pred, entities_path, relations_path)
+    if RADGRAPH_PATH and os.path.exists(RADGRAPH_PATH):
+        if RUN_RADGRAPH_AVAILABLE:
+            try:
+                from CXRMetric.radgraph_evaluate_model import run_radgraph
+                run_radgraph(cache_gt_csv, cache_pred_csv, cache_path, RADGRAPH_PATH,
+                             entities_path, relations_path)
+                pred = add_radgraph_col(pred, entities_path, relations_path)
+            except Exception as e:
+                print(f"Warning: RadGraph inference failed: {e}")
+                pred['radgraph_combined'] = [0.0] * len(pred)
+        else:
+            print("Warning: RadGraph code not available in repository. Skipping RadGraph inference.")
+            pred['radgraph_combined'] = [0.0] * len(pred)
+    else:
+        print("Warning: RadGraph model not available — radgraph_combined set to 0.0")
+        pred['radgraph_combined'] = [0.0] * len(pred)
 
-    # compute composite metric: RadCliQ-v0
-    with open(COMPOSITE_METRIC_V0_PATH, "rb") as f:
-        composite_metric_v0_model = pickle.load(f)
-    with open(NORMALIZER_PATH, "rb") as f:
-        normalizer = pickle.load(f)
-    # normalize
-    input_data = np.array(pred[COLS])
-    norm_input_data = normalizer.transform(input_data)
-    # generate new col
-    radcliq_v0_scores = composite_metric_v0_model.predict(norm_input_data)
-    pred[composite_metric_col_v0] = radcliq_v0_scores
+    # compute composite metric: RadCliQ-v0 and v1 — only if required columns are present
+    if all(c in pred.columns for c in COLS):
+        try:
+            with open(COMPOSITE_METRIC_V0_PATH, "rb") as f:
+                composite_metric_v0_model = pickle.load(f)
+            with open(NORMALIZER_PATH, "rb") as f:
+                normalizer = pickle.load(f)
+            # normalize
+            input_data = np.array(pred[COLS])
+            norm_input_data = normalizer.transform(input_data)
+            # generate new col
+            radcliq_v0_scores = composite_metric_v0_model.predict(norm_input_data)
+            pred[composite_metric_col_v0] = radcliq_v0_scores
 
-    # compute composite metric: RadCliQ-v1
-    with open(COMPOSITE_METRIC_V1_PATH, "rb") as f:
-        composite_metric_v1_model = pickle.load(f)
-    input_data = np.array(pred[COLS])
-    radcliq_v1_scores = composite_metric_v1_model.predict(input_data)
-    pred[composite_metric_col_v1] = radcliq_v1_scores
+            # compute composite metric: RadCliQ-v1
+            with open(COMPOSITE_METRIC_V1_PATH, "rb") as f:
+                composite_metric_v1_model = pickle.load(f)
+            input_data = np.array(pred[COLS])
+            radcliq_v1_scores = composite_metric_v1_model.predict(input_data)
+            pred[composite_metric_col_v1] = radcliq_v1_scores
+        except Exception as e:
+            print(f"Warning: composite metric computation failed: {e}")
+            pred[composite_metric_col_v0] = [0.0] * len(pred)
+            pred[composite_metric_col_v1] = [0.0] * len(pred)
+    else:
+        print("Warning: missing metric columns for composite computation; skipping RadCliQ metrics")
+        pred[composite_metric_col_v0] = [0.0] * len(pred)
+        pred[composite_metric_col_v1] = [0.0] * len(pred)
 
     # --- Compute CheXpert micro-F1 (uses CheXbert labeler) and box metrics if available ---
     summary = {}

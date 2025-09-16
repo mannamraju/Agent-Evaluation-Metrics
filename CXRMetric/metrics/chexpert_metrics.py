@@ -44,7 +44,7 @@ class CheXpertEvaluator(BaseEvaluator):
         
         if not SKLEARN_AVAILABLE:
             raise ImportError("scikit-learn is required for CheXpertEvaluator")
-        
+         
         self.chexbert_path = chexbert_path
         self.cache_dir = cache_dir
         self.treat_uncertain_as_positive = treat_uncertain_as_positive
@@ -196,7 +196,7 @@ class CheXpertEvaluator(BaseEvaluator):
         gt_aligned.to_csv(cache_gt_csv, index=False)
         pred_aligned.to_csv(cache_pred_csv, index=False)
         
-        # Run CheXbert labeling
+        # Run CheXbert labeling (will no-op if model or code is missing)
         print("Running CheXbert labeling for predictions...")
         pred_labeled_csv = self._run_chexbert_labeler(cache_pred_csv, self.pred_labels_dir)
         
@@ -214,7 +214,7 @@ class CheXpertEvaluator(BaseEvaluator):
                 print(f"Warning: CheXpert metric computation failed: {e}")
                 self._last_results = None
         else:
-            print("Warning: CheXbert labeling failed")
+            print("Warning: CheXpert labeling failed or CheXbert model unavailable. CheXpert results will be unavailable.")
             self._last_results = None
         
         return pred_aligned

@@ -39,28 +39,20 @@ corresponding "study_id" column that contains unique identifies for the reports.
 In `config.py`, set `GT_REPORTS` and `PREDICTED_REPORTS` to paths to the CSVs.
 Set `OUT_FILE` to the desired path for the output metric scores.
 
-## CheXbert
-To compute the CheXbert vector similarity (s_emb) metric score, download the
-CheXbert model checkpoint [here](https://stanfordmedicine.box.com/s/c3stck6w6dol3h36grdc97xoydzxd7w9).
-Set `CHEXBERT_PATH` in `config.py` to the path to the downloaded checkpoint.
 
-The code for computing the CheXbert metric score is adapted from
-[stanfordmlgroup/CheXbert](https://github.com/stanfordmlgroup/CheXbert).
+# Note about removed integrations
+The repository previously included integrations for CheXbert (semantic embedding) and
+RadGraph (DyGIE++). Those folders were removed from this workspace and the
+corresponding model-based metrics are now disabled by default. If you need to
+re-enable them, restore the relevant model files and update `config.py` with
+the correct model paths. The repo still supports text-based metrics such as
+BLEU, ROUGE and BERTScore.
 
-Paper (Accepted to EMNLP 2020): https://arxiv.org/abs/2004.09167.
-
-## RadGraph
-To compute the RadGraph metric score, download the RadGraph model checkpoint
-from PhysioNet [here](https://physionet.org/content/radgraph/1.0.0/).
-The checkpoint file can be found under the "Files" section at path
-`models/model_checkpoint/`.
-Set `RADGRAPH_PATH` in `config.py` to the path to the downloaded checkpoint.
-
-The code for computing the RadGraph metric score is adapted from
-[dwadden/dygiepp](https://github.com/dwadden/dygiepp).
-Note: You need to apply for credentialed access to RadGraph on PhysioNet.
-
-Paper (Accepted to NeurIPS 2021): https://arxiv.org/abs/2106.14463.
+## Supported metrics (note)
+This repository currently supports the following metrics by default: BLEU,
+BERTScore, ROUGE and bounding-box IoU. Model-based metrics that require
+external checkpoints (CheXbert, RadGraph) are disabled until the corresponding
+models are restored.
 
 
 <a name="usage"></a>

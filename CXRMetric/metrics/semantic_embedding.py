@@ -136,16 +136,17 @@ class SemanticEmbeddingEvaluator(BaseEvaluator):
         
         # Generate embeddings if they don't exist
         try:
+            # If model path is not set or model files are missing, warn and
+            # produce zero scores instead of raising an error.
+            if self.chexbert_path is None or not os.path.exists(self.chexbert_path):
+                raise FileNotFoundError(f"CheXbert model not found at {self.chexbert_path}")
+            
             if not os.path.exists(self.pred_embed_path):
                 print("Generating prediction embeddings...")
-                if not os.path.exists(self.chexbert_path):
-                    raise FileNotFoundError(f"CheXbert model not found at {self.chexbert_path}")
                 self._run_embedding_generation(cache_pred_csv, self.pred_embed_path)
             
             if not os.path.exists(self.gt_embed_path):
                 print("Generating ground truth embeddings...")
-                if not os.path.exists(self.chexbert_path):
-                    raise FileNotFoundError(f"CheXbert model not found at {self.chexbert_path}")
                 self._run_embedding_generation(cache_gt_csv, self.gt_embed_path)
             
             # Compute similarities

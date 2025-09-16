@@ -55,13 +55,13 @@ class ModularEvaluationRunner:
         
         # Initialize evaluators (lazy loading)
         self.evaluators = {}
+        # Remove evaluators that depend on deleted model folders (CheXbert, DyGIE++)
+        # These evaluators remain in the repo but are not enabled by default to
+        # avoid import/runtime errors when model files are not present.
         self._available_metrics = {
             'bleu': BLEUEvaluator,
             'rouge': ROUGEEvaluator,
             'bertscore': BERTScoreEvaluator,
-            'semantic_embedding': SemanticEmbeddingEvaluator,
-            'radgraph': RadGraphEvaluator,
-            'chexpert': CheXpertEvaluator,
             'composite': CompositeMetricEvaluator,
             'bounding_box': BoundingBoxEvaluator
         }
@@ -76,8 +76,8 @@ class ModularEvaluationRunner:
             Configuration dictionary
         """
         default_config = {
-            'chexbert_path': 'CXRMetric/CheXbert/chexbert.pth',
-            'radgraph_path': 'CXRMetric/dygie_model',
+            'chexbert_path': None,
+            'radgraph_path': None,
             'composite_v0_path': 'CXRMetric/composite_metric_model.pkl',
             'composite_v1_path': 'CXRMetric/radcliq-v1.pkl',
             'normalizer_path': 'CXRMetric/normalizer.pkl'

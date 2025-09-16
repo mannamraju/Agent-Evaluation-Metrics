@@ -1,6 +1,9 @@
 # Model checkpoints
-CHEXBERT_PATH = "CheXbert/models/chexbert.pth"
-RADGRAPH_PATH = "radgraph/physionet.org/files/radgraph/1.0.0/models/model_checkpoint/model.tar.gz"
+# CheXbert and RadGraph models were removed from the repository.
+# If you need these metrics again, set these to the appropriate checkpoint
+# paths (local path or remote storage location). For now they are disabled.
+CHEXBERT_PATH = None
+RADGRAPH_PATH = None
 
 # Report paths
 GT_REPORTS = "reports/gt_reports.csv"
