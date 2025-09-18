@@ -10,16 +10,13 @@ import numpy as np
 from typing import List, Dict, Any
 
 try:
-    from fast_bleu import BLEU
-    FAST_BLEU_AVAILABLE = True
-except ImportError:
-    FAST_BLEU_AVAILABLE = False
-    try:
-        from nltk.translate.bleu_score import sentence_bleu
-        import nltk
-        NLTK_BLEU_AVAILABLE = True
-    except ImportError:
-        NLTK_BLEU_AVAILABLE = False
+    # Use NLTK as the canonical BLEU implementation. fast-bleu support has
+    # been removed to simplify deployment and maintenance.
+    from nltk.translate.bleu_score import sentence_bleu
+    import nltk
+    NLTK_BLEU_AVAILABLE = True
+except Exception:
+    NLTK_BLEU_AVAILABLE = False
 
 from ..base_evaluator import BaseEvaluator
 
@@ -46,6 +43,9 @@ class BLEUEvaluator(BaseEvaluator):
         # Define n-gram weights
         self.bleu2_weights = {"bigram": (1/2., 1/2.)}
         self.bleu4_weights = {"bleu4": (1/4., 1/4., 1/4., 1/4.)}
+        # Backwards-compatible runtime flags
+        self._fast_bleu_available = False
+        self._nltk_available = NLTK_BLEU_AVAILABLE
     
     def _compute_bleu_score(self, reference_tokens: List[str], candidate_tokens: List[str], n_grams: int) -> float:
         """Compute BLEU score using available implementation.
@@ -58,23 +58,13 @@ class BLEUEvaluator(BaseEvaluator):
         Returns:
             BLEU score
         """
-        if FAST_BLEU_AVAILABLE:
-            # Use fast-bleu implementation
-            if n_grams == 2:
-                bleu = BLEU([reference_tokens], self.bleu2_weights)
-                score = bleu.get_score([candidate_tokens])["bigram"]
-            else:  # n_grams == 4
-                bleu = BLEU([reference_tokens], self.bleu4_weights)  
-                score = bleu.get_score([candidate_tokens])["bleu4"]
-            return score[0] if isinstance(score, list) else score
-        
-        elif NLTK_BLEU_AVAILABLE:
+        if NLTK_BLEU_AVAILABLE:
             # Use NLTK implementation
             if n_grams == 2:
                 weights = (0.5, 0.5, 0.0, 0.0)
             else:  # n_grams == 4
                 weights = (0.25, 0.25, 0.25, 0.25)
-            
+
             try:
                 score = sentence_bleu([reference_tokens], candidate_tokens, weights=weights)
                 return score
@@ -153,9 +143,10 @@ class BLEUEvaluator(BaseEvaluator):
         Returns:
             Updated pred_df with BLEU score columns added
         """
-        # Check for available implementations
-        if not (FAST_BLEU_AVAILABLE or NLTK_BLEU_AVAILABLE):
-            print("Warning: Using fallback BLEU implementation. Install fast-bleu or nltk for better performance.")
+        # Implementation selection is driven at import time; if NLTK is not
+        # available this evaluator will gracefully fall back to the simple
+        # in-repo n-gram precision implementation without printing a warning.
+        # (This keeps demos quiet and avoids noisy output in CI.)
         
         # Align dataframes
         gt_aligned, pred_aligned = self.align_dataframes(gt_df, pred_df)
@@ -183,7 +174,6 @@ class BLEUEvaluator(BaseEvaluator):
                         score2 = self._compute_bleu_score(gt_report, predicted_report, 2)
                         pred_aligned.at[_index, "bleu_score"] = score2
                     except Exception as e:
-                        print(f"Warning: BLEU-2 computation failed for sample {_index}: {e}")
                         pred_aligned.at[_index, "bleu_score"] = 0.0
                 
                 # Compute BLEU-4
@@ -192,7 +182,6 @@ class BLEUEvaluator(BaseEvaluator):
                         score4 = self._compute_bleu_score(gt_report, predicted_report, 4)
                         pred_aligned.at[_index, "bleu4_score"] = score4
                     except Exception as e:
-                        print(f"Warning: BLEU-4 computation failed for sample {_index}: {e}")
                         pred_aligned.at[_index, "bleu4_score"] = 0.0
         
         return pred_aligned

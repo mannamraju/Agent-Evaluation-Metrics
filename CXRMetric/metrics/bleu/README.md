@@ -51,20 +51,17 @@ Default outputs are under: `outputs/metrics/`
 
 ## Implementation details
 
-- Simple fallback vs NLTK vs fast-bleu
+- NLTK vs fallback
   - The module includes a compact Python fallback BLEU implementation used when
-    neither `fast-bleu` nor `nltk` is installed. The fallback is easy to audit
-    and suitable for demos and small tests, but it short-circuits to zero when
-    any higher-order n-gram precision is zero (so BLEU-4 often becomes 0 for
-    short or paraphrased clinical sentences).
-  - `nltk`'s `sentence_bleu` is supported when available. NLTK provides a
-    well-tested BLEU implementation with support for multiple references and
-    provided smoothing functions (via `nltk.translate.bleu_score.SmoothingFunction`).
-    Use NLTK + a smoothing function to obtain more stable, non-zero BLEU-4
-    aggregates for clinical text.
-  - `fast-bleu` is the preferred high-performance implementation for large
-    scale runs; if available the evaluator will use it and fall back to NLTK
-    or the simple implementation.
+    `nltk` is not installed. The fallback is easy to audit and suitable for
+    demos and small tests, but it short-circuits to zero when any higher-order
+    n-gram precision is zero (so BLEU-4 often becomes 0 for short or paraphrased
+    clinical sentences).
+  - `nltk`'s `sentence_bleu` is the canonical implementation used by this
+    repository. NLTK provides a well-tested BLEU implementation with support for
+    multiple references and provided smoothing functions (via
+    `nltk.translate.bleu_score.SmoothingFunction`). Use NLTK + a smoothing
+    function to obtain more stable, non-zero BLEU-4 aggregates for clinical text.
 
 - Smoothing and its purpose
   - Medical reports are often short and paraphrased; exact 3- or 4-gram

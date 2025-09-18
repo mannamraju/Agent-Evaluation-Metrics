@@ -73,7 +73,7 @@ def test_bleu_implementation():
     
     # Test fallback implementation info
     print("\n🛠️  Implementation Details:")
-    print(f"• Using fallback BLEU implementation: {not hasattr(evaluator, '_fast_bleu_available')}")
+    print(f"• Using fallback BLEU implementation: {not getattr(evaluator, '_nltk_available', False) == False}")
     print("• BLEU-2 weights: (0.5, 0.5, 0.0, 0.0)")
     print("• BLEU-4 weights: (0.25, 0.25, 0.25, 0.25)")
     

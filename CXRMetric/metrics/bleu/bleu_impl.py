@@ -199,6 +199,15 @@ def run_bleu_evaluator_consolidated(output_csv: str = 'outputs/metrics/bleu_metr
     gt_df, pred_df = _build_dfs_from_bleu_cases(bleu_cases)
 
     evaluator = BLEUEvaluator(compute_bleu2=True, compute_bleu4=True, study_id_col='study_id', report_col='report')
+    # Report which implementation is active (NLTK vs fallback). This confirms
+    # for users that the NLTK-based BLEU implementation is being used when
+    # available and otherwise the repo fallback will be applied silently.
+    try:
+        impl_msg = "NLTK" if evaluator._nltk_available else "fallback"
+    except Exception:
+        impl_msg = "fallback"
+    print(f"Using BLEU implementation: {impl_msg}")
+
     results_df = evaluator.compute_metric(gt_df, pred_df)
 
     out_dir = Path(output_csv).parent
@@ -308,6 +317,23 @@ def run_bleu_evaluation_with_logging():
         "high_quality_bleu4_count": high_quality_bleu4,
         "bleu4_bleu2_ratio": mean_ratio,
         "zero_bleu4_count": sum(1 for score in bleu4_scores if score == 0)
+    }
+    # Add human-readable interpretation to the results so CLI runs can
+    # explain what the central metrics mean and why a None may appear.
+    results['interpretation'] = {
+        'mean_bleu_explanation': (
+            'Mean BLEU-X is the arithmetic mean of per-sample BLEU-X scores. '
+            'It summarizes average n-gram overlap between candidate and reference '
+            'reports. A value near 0 indicates few exact n-gram matches; values '
+            'closer to 1 indicate high overlap.'
+        ),
+        'none_reason': (
+            'If a mean is reported as None it indicates that no per-sample '
+            'scores were available (for example, the evaluator was skipped, '
+            'dataset had no matching samples, or an error occurred during '
+            'computation). Ensure the BLEU evaluator ran successfully and '
+            'that the input cases are present.'
+        )
     }
 
     log_entry = log_bleu_evaluation(results, config)

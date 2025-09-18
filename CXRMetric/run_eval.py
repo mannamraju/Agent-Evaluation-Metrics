@@ -15,17 +15,13 @@ except ImportError:
     print("Warning: bert_score not available. BERTScore will be skipped.")
 
 try:
-    from fast_bleu import BLEU
-    FAST_BLEU_AVAILABLE = True
-except ImportError:
-    FAST_BLEU_AVAILABLE = False
-    try:
-        from nltk.translate.bleu_score import sentence_bleu
-        import nltk
-        NLTK_BLEU_AVAILABLE = True
-    except ImportError:
-        NLTK_BLEU_AVAILABLE = False
-        print("Warning: Neither fast_bleu nor nltk available. BLEU scores will use fallback implementation.")
+    # Use NLTK as the canonical BLEU implementation. fast-bleu dependency removed.
+    from nltk.translate.bleu_score import sentence_bleu
+    import nltk
+    NLTK_BLEU_AVAILABLE = True
+except Exception:
+    NLTK_BLEU_AVAILABLE = False
+    print("Warning: nltk not available. BLEU scores will use fallback implementation.")
 
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import MinMaxScaler
@@ -105,19 +101,7 @@ def prep_reports(reports):
 
 def compute_bleu_score_safe(reference_tokens, candidate_tokens, n_grams=2):
     """Safely compute BLEU score with fallbacks for missing packages."""
-    if FAST_BLEU_AVAILABLE:
-        # Use fast-bleu implementation
-        if n_grams == 2:
-            weights_dict = {"bigram": (1/2., 1/2.)}
-            bleu = BLEU([reference_tokens], weights_dict)
-            score = bleu.get_score([candidate_tokens])["bigram"]
-        else:  # n_grams == 4
-            weights_dict = {"bleu4": (1/4., 1/4., 1/4., 1/4.)}
-            bleu = BLEU([reference_tokens], weights_dict)
-            score = bleu.get_score([candidate_tokens])["bleu4"]
-        return score[0] if isinstance(score, list) else score
-    
-    elif NLTK_BLEU_AVAILABLE:
+    if NLTK_BLEU_AVAILABLE:
         # Use NLTK implementation
         if n_grams == 2:
             weights = (0.5, 0.5, 0.0, 0.0)

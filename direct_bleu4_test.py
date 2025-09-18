@@ -85,14 +85,10 @@ def test_bleu_direct():
     # Implementation check
     print(f"\n🔧 Implementation Info:")
     try:
-        import fast_bleu
-        print("  • Using fast_bleu (optimized)")
+        import nltk
+        print("  • Using NLTK (standard)")
     except ImportError:
-        try:
-            import nltk
-            print("  • Using NLTK (standard)")
-        except ImportError:
-            print("  • Using custom implementation (fallback)")
+        print("  • Using custom implementation (fallback)")
     
     return results
 
