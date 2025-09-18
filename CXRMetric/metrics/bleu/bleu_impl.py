@@ -384,7 +384,21 @@ def evaluate_medical_reports_bleu4(reference_reports: List[str],
     poor_bleu4 = sum(1 for s in bleu4_scores if 0.05 <= s < 0.10)
     very_poor_bleu4 = sum(1 for s in bleu4_scores if s < 0.05)
 
-    # Smoothing analysis
+    # Smoothing analysis:
+    # - 'smoothing_applied' is set when a smoothing rule was used to avoid zero precision
+    #   for higher-order n-grams (e.g., when no 3- or 4-gram matches exist).
+    # - Counting how often smoothing is applied indicates how frequently strict
+    #   n-gram matching would yield zero BLEU-4 scores for medical reports; a high
+    #   count implies many cases are too short or too different to form exact 4-grams.
+    # - Common smoothing methods implemented in this module:
+    #     * 'epsilon'     : insert a tiny epsilon (e.g. 1e-7) to avoid log(0)
+    #     * 'add_one'     : Laplace-style add-one smoothing on n-gram counts
+    #     * 'chen_cherry'  : heuristic scaling often used for BLEU smoothing
+    # - Smoothing makes BLEU-4 comparisons more stable (non-zero but small scores)
+    #   and allows aggregate statistics (means/std) to be computed without being
+    #   dominated by exact-match sparsity. The 'smoothing_method' field in the
+    #   returned dictionary records which technique was used for the run.
+
     smoothing_count = sum(1 for r in all_results if r.get('smoothing_applied'))
 
     return {

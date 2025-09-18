@@ -261,6 +261,7 @@
       "generated": "Left lower lobe atelectasis is identified on the image."
     }
   ],
+  "rouge_unit_info": "Unit-test cases for ROUGE token-overlap calculations.\n  Each entry is a 3-element array: [reference_tokens, candidate_tokens, expected_token_overlap_count].\n  - reference_tokens: list of tokens from the reference (already tokenized for unit tests).\n  - candidate_tokens: list of tokens from the candidate/generated text.\n  - expected_token_overlap_count: integer representing the expected count of overlapping tokens (or LCS length in simple unit tests).\n  These cases are small, deterministic checks used by unit tests to assert basic ROUGE/overlap behavior and should not be used as evaluation datasets.",
   "rouge_unit": [
     [[], [], 0],
     [["a"], [], 0],

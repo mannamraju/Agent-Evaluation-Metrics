@@ -117,10 +117,42 @@ def run_all(smoothing_methods=None, improved_smoothing=None, output_csv=None):
 
 def main():
     parser = argparse.ArgumentParser(prog='run_bleu_demo', description='Comprehensive BLEU demo runner')
+    # --part: choose which part of the demo to run. Options:
+    #   'all'        : run the entire demo sequence (evaluator, smoothing examples,
+    #                  improved BLEU evaluations, strictness analysis, and history).
+    #   'evaluator'  : run only the consolidated evaluator over canonical test cases
+    #                  and write per-sample scores to a CSV (see --output).
+    #   'smoothing'  : run only the smoothing example harness that demonstrates
+    #                  different smoothing strategies on short medical examples.
+    #   'improved'   : run only the improved BLEU-4 evaluation (applies smoothing
+    #                  strategies across the 'bleu_improved' test cases).
+    #   'strictness' : run only the strictness analysis which compares BLEU-2 vs
+    #                  BLEU-4 across the strictness test cases and logs results.
+    #   'history'    : display recent evaluation history saved to the package
+    #                  summary file (`bleu_evaluation_summary.json`).
     parser.add_argument('--part', choices=['all', 'evaluator', 'smoothing', 'improved', 'strictness', 'history'], default='all', help='Which demo part to run')
+
+    # --output / -o: path to write evaluator CSV results. When omitted the
+    # default is `outputs/metrics/bleu_metrics_results.csv` relative to the
+    # repository root. The evaluator writes a per-sample CSV with columns such
+    # as `study_id`, `bleu_score`, and `bleu4_score`.
     parser.add_argument('--output', '-o', help='Output CSV path for evaluator')
+
+    # --smoothing-method / -s: select a single smoothing method when running the
+    # 'improved' part. Supported methods are: 'epsilon', 'add_one',
+    # 'chen_cherry'. If not specified, the demo will run all supported methods.
     parser.add_argument('--smoothing-method', '-s', help='Single smoothing method for improved BLEU (epsilon|add_one|chen_cherry)')
+
+    # --smoothing-methods / -m: provide a list of smoothing methods to exercise
+    # when running the 'smoothing' examples. Example: `-m epsilon add_one`.
+    # If omitted, the demo will exercise the default set of smoothing methods.
     parser.add_argument('--smoothing-methods', '-m', nargs='*', help='Smoothing methods to exercise for examples (bleu_tools)')
+
+    # --summary-json: when specified, the demo will re-run the minimal set of
+    # selected parts to collect results and write a machine-readable JSON file
+    # that contains a timestamp and a 'summary' object with per-part outputs
+    # (e.g. evaluator summary, smoothing examples, improved BLEU stats). Use
+    # this for automated experiment logging or CI artifact collection.
     parser.add_argument('--summary-json', help='Write a machine-readable JSON summary of the demo run to this path')
 
     args = parser.parse_args()

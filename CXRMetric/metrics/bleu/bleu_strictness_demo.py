@@ -11,6 +11,7 @@ import math
 import argparse
 import json
 import os
+import sys
 
 def tokenize_simple(text):
     """Simple tokenization for BLEU calculation."""
@@ -223,12 +224,27 @@ def parse_and_run():
         test_bleu_strictness()
 
 if __name__ == "__main__":
-    # allow CLI path to data file in CXRMetric/metrics/data by default
-    # If no args provided, call parse_and_run() to enable --data-file option
-    import sys
-    # If the user provided no CLI args, but the metrics_test_cases.json exists in the repo,
-    # prefer running the demo against its 'bleu_strictness' section.
-    repo_data_default = os.path.join(os.path.dirname(__file__), 'CXRMetric', 'metrics', 'data', 'metrics_test_cases.json')
+    # locate metrics_test_cases.json robustly so the demo works both in the repo root
+    # and when the script lives inside the package at CXRMetric/metrics/bleu
+    def _find_metrics_test_cases():
+        p = os.path.abspath(os.path.dirname(__file__))
+        while True:
+            # common layout: <repo_root>/CXRMetric/metrics/data/metrics_test_cases.json
+            candidate = os.path.join(p, 'CXRMetric', 'metrics', 'data', 'metrics_test_cases.json')
+            if os.path.exists(candidate):
+                return candidate
+            # package-local layout when this file is under CXRMetric/metrics/bleu
+            candidate2 = os.path.normpath(os.path.join(p, '..', 'data', 'metrics_test_cases.json'))
+            if os.path.exists(candidate2):
+                return candidate2
+            parent = os.path.dirname(p)
+            if parent == p:
+                break
+            p = parent
+        # fallback to package-relative path
+        return os.path.normpath(os.path.join(os.path.dirname(__file__), '..', 'data', 'metrics_test_cases.json'))
+
+    repo_data_default = _find_metrics_test_cases()
     if len(sys.argv) == 1 and os.path.exists(repo_data_default):
         # run using the metrics data file
         run_from_json(repo_data_default, section='bleu_strictness')
