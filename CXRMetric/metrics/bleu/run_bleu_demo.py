@@ -22,6 +22,17 @@ from pathlib import Path
 import json
 from datetime import datetime
 
+# Try importing NLTK early to avoid import-order issues when this script
+# manipulates sys.path; importing before changing sys.path helps ensure we
+# pick up site-packages' nltk (avoids false negatives where import fails
+# only after path changes).
+try:
+    import nltk  # type: ignore
+    print(f"Detected NLTK at startup: v{nltk.__version__}")
+except Exception:
+    # Do not raise — downstream code will fall back silently if NLTK is missing.
+    pass
+
 # Ensure repo root is importable when executed directly
 repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
 if repo_root not in sys.path:
@@ -53,6 +64,20 @@ def run_all(smoothing_methods=None, improved_smoothing=None, output_csv=None):
             'output_csv': output_csv or 'outputs/metrics/bleu_metrics_results.csv',
             'summary': out[1] if isinstance(out, tuple) and len(out) > 1 else None
         }
+        # If evaluator produced a summary with interpretation, print it so
+        # users understand metric meanings and why None may appear.
+        summary = results_cache['evaluator'].get('summary')
+        if isinstance(summary, dict) and summary.get('mean_bleu2') is not None:
+            print('\nBLEU evaluator summary:')
+            print(f"  mean_bleu2: {summary.get('mean_bleu2')}")
+            print(f"  mean_bleu4: {summary.get('mean_bleu4')}")
+        elif isinstance(summary, dict):
+            # Print interpretation when means are missing or None
+            interp = summary.get('interpretation', {})
+            if interp:
+                print('\nBLEU evaluator interpretation:')
+                print('  -', interp.get('mean_bleu_explanation'))
+                print('  -', interp.get('none_reason'))
     except Exception as e:
         print('  • Evaluator failed:', e)
         results_cache['evaluator'] = {'error': str(e)}
@@ -100,6 +125,13 @@ def run_all(smoothing_methods=None, improved_smoothing=None, output_csv=None):
             'results_summary': summary_results,
             'log_entry': log_entry
         }
+        # Print interpretive information for the logged summary if present
+        if isinstance(results_cache['summary']['results_summary'], dict):
+            interp = results_cache['summary']['results_summary'].get('interpretation')
+            if interp:
+                print('\nInterpretation of BLEU means:')
+                print('  -', interp.get('mean_bleu_explanation'))
+                print('  -', interp.get('none_reason'))
     except Exception as ex:
         print('  • Warning: run_bleu_evaluation_with_logging failed:', ex)
         results_cache['summary'] = {'error': str(ex)}
@@ -184,11 +216,58 @@ def main():
                 print("Failed to load improved BLEU test cases:", ex)
                 refs, cands = [], []
 
-            method = args.smoothing_method or 'epsilon'
-            if refs:
-                r = evaluate_medical_reports_bleu4(refs, cands, smoothing_method=method)
-                print(f"Improved BLEU result summary for method={method}:")
-                print(f"  Mean BLEU-4: {r['mean_bleu4']:.4f} ± {r['std_bleu4']:.4f}")
+            # Run the requested smoothing method(s). If a single method is
+            # specified, run that one; otherwise run the canonical set and
+            # produce a small Markdown comparison table under outputs/metrics.
+            methods = [args.smoothing_method] if args.smoothing_method else ['epsilon', 'add_one', 'chen_cherry']
+            improved_results = {}
+            if not refs:
+                for m in methods:
+                    improved_results[m] = {'error': 'no test cases available'}
+            else:
+                for m in methods:
+                    try:
+                        r = evaluate_medical_reports_bleu4(refs, cands, smoothing_method=m)
+                        improved_results[m] = r
+                        print(f"Improved BLEU result summary for method={m}:")
+                        print(f"  Mean BLEU-4: {r['mean_bleu4']:.4f} ± {r['std_bleu4']:.4f}")
+                    except Exception as ex:
+                        improved_results[m] = {'error': str(ex)}
+
+            # Save per-method aggregates as a small Markdown table
+            out_dir = Path('outputs/metrics')
+            out_dir.mkdir(parents=True, exist_ok=True)
+            md_path = out_dir / 'bleu_improved_summary.md'
+            # Append a timestamped block to the summary file so multiple runs
+            # accumulate results. If the file is new, write a top-level title.
+            first_write = not md_path.exists()
+            with open(md_path, 'a', encoding='utf-8') as fh:
+                if first_write:
+                    fh.write('# BLEU improved smoothing summary\n\n')
+                fh.write(f"## Run: {datetime.now().isoformat()}\n\n")
+                fh.write('| method | mean_bleu4 | std_bleu4 | good_range | explanation |\n')
+                fh.write('|---|---:|---:|---|---|\n')
+                for m, val in improved_results.items():
+                    if isinstance(val, dict) and 'mean_bleu4' in val:
+                        mean = val['mean_bleu4']
+                        std = val.get('std_bleu4', 0.0)
+                        smoothing_count = val.get('smoothing_applied_count', 0)
+                        num_samples = val.get('num_samples', len(val.get('bleu4_scores', []))) or 0
+                        smoothing_pct = (smoothing_count / num_samples * 100) if num_samples else 0.0
+                        if mean >= 0.30:
+                            explanation = 'High 4-gram overlap — consistent phrasing and longer exact matches.'
+                        elif mean >= 0.20:
+                            explanation = 'Moderate 4-gram overlap — some paraphrasing reduces exact 4-gram matches.'
+                        else:
+                            explanation = 'Low 4-gram overlap — short reports, paraphrasing, or many samples lack 4-gram matches.'
+                        if smoothing_pct > 5:
+                            explanation += f' Smoothing applied in {smoothing_pct:.0f}% of samples, indicating many missing higher-order n-grams.'
+                        good_range = '>=0.30 good; 0.20-0.30 moderate; <0.20 poor'
+                        fh.write(f"| {m} | {mean:.4f} | {std:.4f} | {good_range} | {explanation} |\n")
+                    else:
+                        fh.write(f"| {m} | ERROR | {val.get('error', 'unknown')} | - | - |\n")
+                fh.write('\n')
+            print(f"\nAppended improved-BLEU per-method summary to: {md_path}")
 
     if args.part in ('all', 'strictness'):
         if analyze_bleu_strictness is None:

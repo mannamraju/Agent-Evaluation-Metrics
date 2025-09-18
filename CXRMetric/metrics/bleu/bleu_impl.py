@@ -202,10 +202,25 @@ def run_bleu_evaluator_consolidated(output_csv: str = 'outputs/metrics/bleu_metr
     # Report which implementation is active (NLTK vs fallback). This confirms
     # for users that the NLTK-based BLEU implementation is being used when
     # available and otherwise the repo fallback will be applied silently.
+    # Perform a runtime import test for NLTK to avoid discrepancies caused
+    # by different import orders or module reloading; this reports the
+    # actual implementation used in the current process.
     try:
-        impl_msg = "NLTK" if evaluator._nltk_available else "fallback"
-    except Exception:
-        impl_msg = "fallback"
+        import nltk
+        impl_msg = f"NLTK v{nltk.__version__}"
+    except Exception as e:
+        impl_msg = "fallback (no NLTK detected)"
+        # Emit the import exception to help diagnose why NLTK cannot be
+        # imported in this process context. This information is only
+        # printed during interactive runs to aid debugging.
+        try:
+            import traceback
+            print('NLTK import error (debug):', repr(e))
+            traceback.print_exc()
+        except Exception:
+            # If printing the traceback fails, swallow the error to avoid
+            # impacting the evaluation flow.
+            pass
     print(f"Using BLEU implementation: {impl_msg}")
 
     results_df = evaluator.compute_metric(gt_df, pred_df)
