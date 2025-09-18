@@ -14,15 +14,14 @@ import time
 import hashlib
 from typing import List, Dict, Any, Optional, Union, Tuple
 from pathlib import Path
+import importlib
 
 # Import metric evaluators
 from .metrics.bleu import BLEUEvaluator
 from .metrics.rouge.rouge_metrics import ROUGEEvaluator
 from .metrics.bertscore import BERTScoreEvaluator
-from .metrics.semantic_embedding import SemanticEmbeddingEvaluator
-from .metrics.radgraph_metrics import RadGraphEvaluator
-from .metrics.bounding_box_metrics import BoundingBoxEvaluator
 from .metrics.composite_metrics import CompositeMetricEvaluator
+from .metrics.bounding_box_metrics import BoundingBoxEvaluator
 
 
 class ModularEvaluationRunner:
@@ -64,6 +63,40 @@ class ModularEvaluationRunner:
             'composite': CompositeMetricEvaluator,
             'bounding_box': BoundingBoxEvaluator
         }
+        
+        # Dynamically enable model-dependent evaluators only when their model
+        # artifacts are configured and the optional modules can be imported.
+        # This avoids import-time failures in lightweight environments.
+        try:
+            # Semantic embedding (CheXbert)
+            chex_path = self.config.get('chexbert_path')
+            if chex_path:
+                try:
+                    sem_mod = importlib.import_module('CXRMetric.metrics.optional.semantic_embedding')
+                    SemClass = getattr(sem_mod, 'SemanticEmbeddingEvaluator')
+                    if os.path.exists(chex_path):
+                        self._available_metrics['semantic_embedding'] = SemClass
+                    else:
+                        print(f"⚠️ Semantic embedding model path not found: {chex_path} — semantic_embedding metric not enabled.")
+                except Exception as ie:
+                    print(f"⚠️ Could not import semantic_embedding evaluator module: {ie}")
+        
+            # RadGraph
+            rad_path = self.config.get('radgraph_path')
+            if rad_path:
+                try:
+                    rad_mod = importlib.import_module('CXRMetric.metrics.optional.radgraph_metrics')
+                    RadClass = getattr(rad_mod, 'RadGraphEvaluator')
+                    if os.path.exists(rad_path):
+                        self._available_metrics['radgraph'] = RadClass
+                    else:
+                        print(f"⚠️ RadGraph model path not found: {rad_path} — radgraph metric not enabled.")
+                except Exception as ie:
+                    print(f"⚠️ Could not import radgraph evaluator module: {ie}")
+        except Exception:
+            # Swallow unexpected errors during dynamic enabling; the runner
+            # should remain usable for non-model metrics.
+            pass
     
     def _load_config(self, config_file: Optional[str]) -> Dict[str, Any]:
         """Load configuration from file or use defaults.
