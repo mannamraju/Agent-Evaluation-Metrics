@@ -9,6 +9,7 @@ import os
 import sys
 import pandas as pd
 import numpy as np
+from datetime import datetime
 
 # Ensure project root is importable so `CXRMetric` package can be imported
 # When this file lives under CXRMetric/metrics/bertscore, the repo root is three
@@ -110,3 +111,45 @@ print('\nSummary statistics:')
 print(_json.dumps(summary, indent=2))
 
 print('\nDone.')
+
+# Also write a timestamped Markdown copy of the per-sample results and summary
+try:
+    out_dir = os.path.join('outputs', 'metrics')
+    os.makedirs(out_dir, exist_ok=True)
+    ts = datetime.now().strftime('%Y%m%dT%H%M%S')
+    md_path = os.path.join(out_dir, f'bertscore_summary_{ts}.md')
+    with open(md_path, 'w', encoding='utf-8') as md:
+        md.write(f"# BERTScore run summary ({ts})\n\n")
+        md.write('## Per-sample BERTScore Results\n\n')
+        md.write('| study_id | precision | recall | f1 | good_range | why |\n')
+        md.write('|---|---:|---:|---:|---|---|\n')
+        for _, row in result_df.iterrows():
+            sid = int(row['study_id'])
+            p = row.get('bertscore_precision', 0.0)
+            r = row.get('bertscore_recall', 0.0)
+            f = row.get('bertscore', 0.0)
+            # Categorize F1 into a simple guidance range
+            if f >= 0.65:
+                good_range = 'Good (>=0.65)'
+                explanation = 'High semantic overlap: strong matching of key content and phrasing.'
+            elif f >= 0.55:
+                good_range = 'Moderate (0.55-0.65)'
+                explanation = 'Moderate overlap: some paraphrasing or missing details reduce exact match on phrasing.'
+            else:
+                good_range = 'Poor (<0.55)'
+                explanation = 'Low overlap: predictions miss key content or use substantially different wording (paraphrasing).'
+            # Add nuance based on precision vs recall
+            diff = p - r
+            if diff > 0.05:
+                explanation += ' Precision > Recall → outputs are precise but may miss content.'
+            elif diff < -0.05:
+                explanation += ' Recall > Precision → outputs cover content but may be imprecise.'
+            md.write(f"| {sid} | {p:.4f} | {r:.4f} | {f:.4f} | {good_range} | {explanation} |\n")
+        md.write('\n## Summary statistics\n\n')
+        # Write JSON summary block for clarity
+        md.write('```json\n')
+        md.write(json.dumps(summary, indent=2))
+        md.write('\n```\n')
+    print(f"Saved BERTScore markdown summary to: {md_path}")
+except Exception as _e:
+    print('Failed to save BERTScore markdown summary:', _e)
