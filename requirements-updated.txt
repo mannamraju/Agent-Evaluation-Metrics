@@ -1,0 +1,30 @@
+# Core ML/NLP dependencies optimized for CPU
+torch>=2.9.0
+torchvision>=0.24.0
+torchaudio>=2.9.0
+transformers>=4.35.2
+tokenizers>=0.15.0
+numpy>=1.21.6
+pandas>=1.5.3
+
+# Evaluation metrics
+bert-score>=0.3.13
+rouge-score>=0.1.2
+nltk>=3.9.1
+scikit-learn>=1.0.2
+scipy>=1.9.3
+
+# Text processing
+lxml>=4.9.3
+python-Levenshtein>=0.21.1
+
+# Optimization and monitoring
+optuna>=3.4.0
+tqdm>=4.66.1
+psutil>=5.9.6
+
+# Statistics and analysis
+statsmodels>=0.14.0
+
+# Memory optimization
+memory-profiler>=0.61.0
