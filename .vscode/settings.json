@@ -1,0 +1,19 @@
+{
+    "python.defaultInterpreterPath": "./venv/bin/python",
+    "python.terminal.activateEnvironment": true,
+    "python.terminal.activateEnvInCurrentTerminal": true,
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}",
+        "${workspaceFolder}/CXRMetric"
+    ],
+    "python.analysis.autoSearchPaths": true,
+    "python.analysis.include": [
+        "${workspaceFolder}/**"
+    ],
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.typeCheckingMode": "basic",
+    "terminal.integrated.env.linux": {
+        "PYTHONPATH": "${workspaceFolder}:${workspaceFolder}/CXRMetric"
+    },
+    "python.envFile": "${workspaceFolder}/.env"
+}

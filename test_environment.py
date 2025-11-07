@@ -20,7 +20,6 @@ def test_imports():
         import bert_score
         import nltk
         from CXRMetric.modular_evaluation import ModularEvaluationRunner
-        from CXRMetric.metrics.bleu import BLEUEvaluator
         print("✓ All imports successful")
         return True
     except ImportError as e:
@@ -45,6 +44,7 @@ def test_bleu_evaluation(gt_df, pred_df):
     print("Testing BLEU evaluation...")
     
     try:
+        from CXRMetric.metrics.bleu import BLEUEvaluator
         evaluator = BLEUEvaluator()
         result_df = evaluator.compute_metric(gt_df, pred_df)
         
@@ -63,6 +63,7 @@ def test_modular_runner():
     print("Testing modular evaluation runner...")
     
     try:
+        from CXRMetric.modular_evaluation import ModularEvaluationRunner
         runner = ModularEvaluationRunner()
         print("✓ Modular evaluation runner initialized successfully")
         return True
